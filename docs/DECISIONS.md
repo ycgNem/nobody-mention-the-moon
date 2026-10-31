@@ -55,6 +55,13 @@ Other local projects already listen on 5173–5200 (Last Lighthouse, Goblin Pens
 ### D-011 · Room codes are normalized by the client, and the server rejects anything else · 2026-10-31
 Colyseus `filterBy(['code'])` matches the raw join option, so `moon` and `MOON` would become two separate dinners. Clients send `normalizeRoomCode(code)`. `DinnerRoom.onCreate` throws on any code that isn't 4 normalized characters, so a buggy client gets an error instead of a stray empty room. Found by the M0 integration test.
 
+### D-012 · M1 is played in the 3D greybox, not on a 2D board · 2026-10-31
+M0 already gives us a walkable room with six `seat_*` points, so M1's fun test runs there: guests are placeholder figures at the seats, an overhead camera (`O`) stands in for the board view, and actions come from aiming at things.
+- The rules stay in `shared/sim`, independent of rendering and tested, so nothing is lost if the 3D side changes.
+- The sim updates a plain `DinnerState` in place and returns a list of events. It stays deterministic (seeded RNG stored in the state, fixed step). That's cheaper than copying the state every tick, and it's still easy to replay and test.
+- Solo for M1: the sim runs in the browser. Online players each get their own dinner until M3 moves it to the server.
+- M2 shrinks to the physical layer (kitchen, carrying, full house, line of sight).
+
 ---
 
 ## Open questions

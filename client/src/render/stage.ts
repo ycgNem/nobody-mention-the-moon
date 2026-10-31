@@ -9,7 +9,16 @@ export interface Stage {
   labels: CSS2DRenderer;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
+  /** Ambient fill; dimmed when the dinner's lights go off. */
+  fill: THREE.HemisphereLight;
   render(): void;
+}
+
+export interface House {
+  root: THREE.Object3D;
+  /** The pendant lamp over the table (on the light switch). */
+  lamp: THREE.PointLight | null;
+  byName(name: string): THREE.Object3D | undefined;
 }
 
 export function createStage(container: HTMLElement): Stage {
@@ -35,7 +44,8 @@ export function createStage(container: HTMLElement): Stage {
   camera.rotation.order = 'YXZ';
 
   // Low warm fill so corners aren't pitch black; real light comes from the house's sockets.
-  scene.add(new THREE.HemisphereLight(0xffe2b8, 0x2a1c14, 0.7));
+  const fill = new THREE.HemisphereLight(0xffe2b8, 0x2a1c14, 0.7);
+  scene.add(fill);
   // Moonlight through the north window (-Z). Nobody mention it.
   const moon = new THREE.DirectionalLight(0x8fa8ff, 0.35);
   moon.position.set(0.5, 3, -6);
@@ -57,6 +67,7 @@ export function createStage(container: HTMLElement): Stage {
     labels,
     scene,
     camera,
+    fill,
     render() {
       renderer.render(scene, camera);
       labels.render(scene, camera);
@@ -73,7 +84,7 @@ const GLOWING = ['flame_', 'moon'];
  * Loads a model built by `npm run art`, turns `socket_*_light` empties into lights,
  * and sets up shadows.
  */
-export async function loadHouse(scene: THREE.Scene, asset: string): Promise<THREE.Object3D> {
+export async function loadHouse(scene: THREE.Scene, asset: string): Promise<House> {
   const gltf = await loader.loadAsync(`/models/${asset}.glb`);
   const root = gltf.scene;
 
@@ -95,6 +106,7 @@ export async function loadHouse(scene: THREE.Scene, asset: string): Promise<THRE
     }
   });
 
+  let lamp: THREE.PointLight | null = null;
   for (const socket of lightSockets) {
     const isLamp = socket.name.includes('lamp');
     const light = isLamp
@@ -104,10 +116,11 @@ export async function loadHouse(scene: THREE.Scene, asset: string): Promise<THRE
       light.castShadow = true;
       light.shadow.mapSize.set(1024, 1024);
       light.shadow.bias = -0.002;
+      lamp = light;
     }
     socket.add(light);
   }
 
   scene.add(root);
-  return root;
+  return { root, lamp, byName: (name) => root.getObjectByName(name) };
 }

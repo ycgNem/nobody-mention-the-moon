@@ -488,6 +488,15 @@
   ],
   "interactables": [
     {
+      "id": "candles",
+      "kind": "prop_candles",
+      "position": [
+        0.0,
+        0.95,
+        0.0
+      ]
+    },
+    {
       "id": "curtain",
       "kind": "curtain",
       "position": [
@@ -503,6 +512,24 @@
         4.0,
         1.0,
         -1.5
+      ]
+    },
+    {
+      "id": "lights",
+      "kind": "lights",
+      "position": [
+        3.9,
+        1.25,
+        -0.75
+      ]
+    },
+    {
+      "id": "mirror",
+      "kind": "mirror",
+      "position": [
+        -3.8,
+        1.6,
+        0.0
       ]
     },
     {

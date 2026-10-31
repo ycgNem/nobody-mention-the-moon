@@ -15,13 +15,17 @@
       <label>Your name <input id="join-name" maxlength="16" required /></label>
       <label>Room code <input id="join-code" maxlength="4" required /></label>
       <button type="submit">Join dinner</button>
+      <button type="button" id="join-solo" class="secondary">Play solo (no server)</button>
       <p id="join-error" class="error" hidden></p>
     </form>
 
     <div id="hud" hidden>
       <div id="room-badge"></div>
       <ul id="roster"></ul>
-      <div id="hint">Click to look around · WASD move · Shift sprint · Esc release mouse</div>
+      <div id="hint">
+        Click to look · WASD move · aim at a guest: <b>1 2 3</b> small talk, <b>E</b> serve, <b>G</b> move seat ·
+        <b>Enter</b> say something · <b>O</b> overhead view · <b>`</b> tuning
+      </div>
       <div id="crosshair"></div>
       <div id="net"></div>
     </div>

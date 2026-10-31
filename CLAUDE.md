@@ -23,7 +23,8 @@ Co-op party game for 1–6 players, browser-based, 3D first person. Friends host
 - `npm run dev`: server on :2567 + client on **:5240** (not 5173, which other projects use; D-010)
 - `npm run art [-- asset]`: rebuild models headless with Blender 5.2 (Steam install, or `BLENDER_PATH`)
 - `npm run check`: typecheck + lint + tests. Run it before saying something works.
-- In dev builds, `window.__moon` exposes `{ controls, local, room }` for scripted browser testing. An in-app browser pane that's hidden gets no animation frames, so movement can't be scripted there. Use the server integration test instead.
+- In dev builds, `window.__moon` exposes `{ controls, local, room, session, stage, renderOnce }` for scripted browser testing. A hidden in-app browser pane gets no animation frames, so drive it by hand: `__moon.session.advance(seconds)` steps the dinner sim, and `__moon.renderOnce()` updates the views and HUD and draws one frame. Screenshots of a hidden pane can show a stale frame, so check state through the DOM or `session.state` as well.
+- Balance questions: run the sim headless (`createDinner` + `step`/`act` from `@moon/shared`) over many seeds rather than eyeballing one dinner.
 
 ## Conventions
 

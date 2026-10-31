@@ -84,6 +84,12 @@ body {
   letter-spacing: 0.3em;
 }
 
+.panel button.secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid #5b4636;
+}
+
 .panel button {
   font: inherit;
   font-size: 1.05rem;
@@ -147,7 +153,7 @@ body {
 
 #hint {
   position: absolute;
-  bottom: 16px;
+  top: 54px;
   left: 50%;
   transform: translateX(-50%);
   padding: 6px 12px;
@@ -156,6 +162,10 @@ body {
   font-size: 0.85rem;
   color: var(--ink-dim);
   white-space: nowrap;
+}
+
+#hint b {
+  color: var(--ink);
 }
 
 body.locked #hint {

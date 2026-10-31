@@ -19,7 +19,7 @@ Cook the food, seat the guests and steer the small talk. Above all, watch what y
 
 ## Status
 
-🛠️ **M0 (Foundations) done.** Two players can walk around a script-built greybox dining room together. Next up: **M1, Paper Table**, the 2D prototype of the dinner table (see [MILESTONES.md](docs/MILESTONES.md)).
+🧪 **M1 (Table in the Room) built, waiting on a playtest.** A full solo dinner runs in the greybox room: disguised guests, travelling topics, questions, lies that become rules, the moon rising, and Gary from next door. M0 (two players walking around together) is done too. See [MILESTONES.md](docs/MILESTONES.md).
 
 ## Docs
 
@@ -45,7 +45,9 @@ npm install
 npm run dev
 ```
 
-Then open http://localhost:5240/?room=MOON in two browser tabs. Click to look around, WASD to move, Shift to sprint.
+Then open http://localhost:5240/ and press **Play solo** for a dinner (no server needed), or **Join dinner** to walk around with friends in the same room code.
+
+**Playing a dinner:** aim at a guest and press **1 2 3** to hand them a Small Talk card, **E** to serve a dish, **G** to move them to another seat. Aim at the curtains, mirror, light switch, painting or candles and press **E**. When a guest asks you something, answer with the number keys. **Enter** opens a box for saying something out loud: guests in earshot hear it, so don't type "moon" near the werewolf. **O** toggles an overhead view, and **`** opens the live tuning panel.
 
 | Command | What it does |
 |---|---|
@@ -54,4 +56,4 @@ Then open http://localhost:5240/?room=MOON in two browser tabs. Click to look ar
 | `npm run check` | Typecheck + lint + tests |
 | `npm test` | Vitest: shared rules, layout validation, physics, and a two-client server test |
 
-Handy URL params: `?room=CODE&name=Ada&autojoin=1`.
+Handy URL params: `?solo=1&seed=MOON-TEST` (replay a dinner), `?room=CODE&name=Ada&autojoin=1`.

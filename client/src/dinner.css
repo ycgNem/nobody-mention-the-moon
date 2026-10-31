@@ -1,0 +1,537 @@
+/* Dinner UI: guests at the table, topic bubbles, tells, and the dinner HUD. */
+
+.nametag.neighbor {
+  border-bottom: 2px solid #c9c3b5;
+  font-style: italic;
+}
+
+/* ---- Guests at the table ------------------------------------------------------------- */
+
+.guest-tag {
+  padding: 3px 8px 4px;
+  background: var(--panel);
+  border-radius: 5px;
+  border-bottom: 3px solid transparent;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  text-align: center;
+  transition: transform 0.15s;
+}
+
+.guest-tag.focus {
+  outline: 2px solid var(--accent);
+  transform: scale(1.12);
+}
+
+.guest-tag.selected {
+  outline: 2px dashed #7fd1ff;
+}
+
+.guest-tag.suspicious .name::after {
+  content: ' (suspicious)';
+  color: var(--danger);
+}
+
+.guest-tag .type {
+  color: var(--danger);
+  font-style: italic;
+}
+
+.guest-tag .hunger {
+  margin-left: 4px;
+}
+
+.guest-tag .hunger.urgent {
+  animation: blink 0.5s steps(2) infinite;
+}
+
+.guest-tag .meter {
+  height: 3px;
+  margin-top: 3px;
+  background: #3a2b24;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.guest-tag .meter i {
+  display: block;
+  height: 100%;
+  background: #7fa36b;
+}
+
+.guest-tag .meter i.mid {
+  background: #e8c547;
+}
+
+.guest-tag .meter i.low {
+  background: var(--danger);
+}
+
+.guest-tag .slip {
+  color: var(--danger);
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.guest-tag .slip:empty {
+  display: none;
+}
+
+.bubble {
+  position: relative;
+  max-width: 220px;
+  padding: 6px 10px 6px 34px;
+  background: #f2e6c8;
+  color: #241b16;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.bubble.pop {
+  animation: pop 0.25s ease-out;
+}
+
+.bubble .fuse {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: conic-gradient(#9e2f2f calc(var(--fuse, 1) * 360deg), #d9c9a3 0);
+}
+
+.bubble .label {
+  font-style: italic;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 2px;
+}
+
+.chip {
+  padding: 0 5px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.7rem;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.tell {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(20, 14, 12, 0.85);
+  font-size: 0.78rem;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.tell-bad {
+  color: #ffb3a8;
+}
+
+.tell-good {
+  color: #c8f0b0;
+}
+
+.tell-neutral {
+  color: var(--ink-dim);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+/* ---- Dinner HUD ----------------------------------------------------------------------- */
+
+.dinner-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dh-panel {
+  background: var(--panel);
+  border: 1px solid #5b4636;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.dh-panel h3 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  font-weight: normal;
+  color: var(--accent);
+}
+
+.dh-bar {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 6px 14px;
+  background: var(--panel);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.cover-meter {
+  display: inline-block;
+  width: 110px;
+  height: 8px;
+  vertical-align: middle;
+  background: #3a2b24;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cover-meter i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.cover-meter.low i {
+  background: var(--danger);
+}
+
+.strike {
+  margin-left: 3px;
+  color: var(--ink-dim);
+}
+
+.strike.on {
+  color: var(--danger);
+}
+
+.dh-ledger {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 250px;
+  font-size: 0.8rem;
+}
+
+.dh-ledger .rule {
+  margin-bottom: 6px;
+}
+
+.dh-ledger .rule-text {
+  color: var(--ink);
+}
+
+.dh-ledger .claim {
+  color: var(--ink-dim);
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+.dh-log {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.8rem;
+}
+
+.dh-log .line {
+  padding: 2px 8px;
+  background: rgba(20, 14, 12, 0.72);
+  border-radius: 4px;
+  animation: pop 0.2s ease-out;
+}
+
+.dh-log .bad {
+  color: #ffb3a8;
+}
+
+.dh-log .good {
+  color: #c8f0b0;
+}
+
+.dh-log .big {
+  color: var(--accent);
+}
+
+.dh-toast {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: min(640px, calc(100% - 32px));
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: var(--panel);
+  font-size: 1.05rem;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.dh-toast.show {
+  opacity: 1;
+}
+
+.dh-toast.bad {
+  color: #ffb3a8;
+  border: 1px solid var(--danger);
+}
+
+.dh-toast.big {
+  color: var(--accent);
+}
+
+.dh-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 128px;
+  transform: translateX(-50%);
+  padding: 5px 12px;
+  background: rgba(20, 14, 12, 0.8);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.dh-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.dh-hand .card {
+  position: relative;
+  width: 170px;
+  min-height: 92px;
+  padding: 8px 10px 8px 30px;
+  background: #f2e6c8;
+  color: #241b16;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dh-hand .card.cooling {
+  background: rgba(242, 230, 200, 0.25);
+  color: var(--ink-dim);
+}
+
+.dh-hand .card > b,
+.option > b,
+.dh-results .again b {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: #241b16;
+  color: var(--accent);
+  text-align: center;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+.dh-hand .card > b {
+  position: absolute;
+  left: 6px;
+  top: 8px;
+}
+
+.dh-hand .card .label {
+  font-style: italic;
+}
+
+.dh-question {
+  position: absolute;
+  left: 50%;
+  bottom: 170px;
+  transform: translateX(-50%);
+  width: min(520px, calc(100% - 32px));
+  border-color: var(--accent);
+}
+
+.dh-question .asker {
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+}
+
+.dh-question .qtext {
+  margin: 4px 0 8px;
+  font-size: 1.1rem;
+}
+
+.option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+.option small {
+  grid-column: 2;
+  color: var(--ink-dim);
+  font-size: 0.72rem;
+}
+
+.option.truth span,
+.option.deflect span {
+  color: var(--ink-dim);
+}
+
+.option.cooling {
+  opacity: 0.45;
+}
+
+.dh-question .timer {
+  height: 4px;
+  margin-top: 8px;
+  background: #3a2b24;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.dh-question .timer i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.dh-serve {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+}
+
+.hint {
+  color: var(--ink-dim);
+}
+
+.dh-say {
+  position: absolute;
+  left: 50%;
+  bottom: 128px;
+  transform: translateX(-50%);
+  width: min(520px, calc(100% - 32px));
+  pointer-events: auto;
+}
+
+.dh-say input {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  background: #241b16;
+  color: var(--ink);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+}
+
+.dh-results {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(460px, calc(100% - 32px));
+  text-align: center;
+}
+
+.dh-results h2 {
+  margin: 0 0 6px;
+  font-weight: normal;
+}
+
+.dh-results .stars {
+  font-size: 2rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.dh-results .tips {
+  font-size: 1.2rem;
+}
+
+.dh-results blockquote {
+  margin: 10px 0;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+
+.dh-results .stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 16px;
+  margin: 10px 0;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.dh-results .stats div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dh-tuning {
+  position: absolute;
+  left: 12px;
+  top: 100px;
+  bottom: 220px;
+  width: 300px;
+  overflow-y: auto;
+  pointer-events: auto;
+  font-size: 0.75rem;
+}
+
+.dh-tuning label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0;
+}
+
+.dh-tuning input[type='number'] {
+  width: 80px;
+  padding: 2px 4px;
+  font: inherit;
+  background: #241b16;
+  color: var(--ink);
+  border: 1px solid #5b4636;
+  border-radius: 4px;
+}
+
+.dh-tuning input.changed {
+  border-color: var(--accent);
+}
+
+.dh-tuning label.meters {
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+body.overhead #crosshair {
+  display: none;
+}

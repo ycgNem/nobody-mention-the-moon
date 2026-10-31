@@ -13,6 +13,8 @@ export interface MoveIntent {
 export class Controls {
   yaw = 0;
   pitch = 0;
+  /** False in the overhead view: clicks don't grab the mouse. */
+  lookEnabled = true;
   private keys = new Set<string>();
 
   constructor(surface: HTMLElement) {
@@ -24,7 +26,7 @@ export class Controls {
     window.addEventListener('blur', () => this.keys.clear());
 
     surface.addEventListener('click', () => {
-      if (document.pointerLockElement !== surface) void surface.requestPointerLock();
+      if (this.lookEnabled && document.pointerLockElement !== surface) void surface.requestPointerLock();
     });
     document.addEventListener('pointerlockchange', () => {
       document.body.classList.toggle('locked', document.pointerLockElement === surface);

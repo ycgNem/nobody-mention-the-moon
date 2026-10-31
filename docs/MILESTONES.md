@@ -38,49 +38,54 @@ M0 Foundations ─▶ M1 Paper Table ─▶ M2 Solo 3D Dinner ─▶ M3 Multipla
 
 ---
 
-## M1: Paper Table (the fun test) · M
+## M1: Table in the Room (the fun test) · M · 🧪 built 2026-10-31, waiting on a playtest
 
-**Goal:** prove the table puzzle is fun **before** building the 3D game around it. All rules live in `shared/sim`, played on a 2D debug board in the browser. Single player, no netcode.
+**Goal:** prove the table puzzle is fun **before** building the rest of the game around it. All rules live in `shared/sim` as deterministic, tested TypeScript. They're played **in the 3D greybox room** from M0, not on a separate 2D board (D-012). Solo: the sim runs in the browser, and moving it to the server is M3.
 
-- [ ] `DinnerState`, `step()`, beat clock, seeded setup from a dinner seed
-- [ ] Topic passing with `pull` scoring, plus a next-receiver preview arc
-- [ ] Guest meters: Composure, Hunger. Slip at 0 Composure. Eating a neighbor at 100 Hunger.
-- [ ] Team meters: Cover, Strikes. Win at dessert, lose at 3 strikes or Cover 0.
-- [ ] 3 guest types as data: **werewolf, vampire, ghost** (core triggers only)
-- [ ] Hidden types + disguises (name and color only)
-- [ ] Player actions on the board: Small Talk card → guest, serve dish → guest, swap two seats, toggle curtains or mirror cover, hold up prop
-- [ ] Direct questions → Deflect, Truth or Lie → Rumor Ledger Rules
-- [ ] Rule-break checks (simple "in view" flag in 2D) and contradiction detection
-- [ ] 2 events: Moonrise, Doorbell: Neighbor
-- [ ] Typed "say" box that runs the trigger-word matcher (stands in for voice)
-- [ ] Vitest coverage for topic passing, meters, ledger and contradictions
-- [ ] All numbers in `shared/tuning.ts`. Live tuning panel on the debug board.
+- [x] `DinnerState`, `step()`, beat clock, seeded setup from a dinner seed
+- [x] Topic passing with `pull` scoring, plus a next-receiver preview arc
+- [x] Guest meters: Composure, Hunger. Slip at 0 Composure. Eating a neighbor at 100 Hunger.
+- [x] Team meters: Cover, Strikes. Win at dessert, lose at 3 strikes or Cover 0.
+- [x] 3 guest types as data: **werewolf, vampire, ghost** (core triggers only)
+- [x] Hidden types + disguises (name and color only)
+- [x] Placeholder guests seated at the greybox `seat_*` points: name tag, topic bubble with tag icons, fuse ring, preview arc, tells as floating text
+- [x] **Overhead view** toggle (`O`) for reading the whole table, with click-to-target
+- [x] Actions by aiming at a guest or object: Small Talk cards (1/2/3), serve a dish (E → menu), swap seats (G), curtains, mirror cover, lights, hold up a prop (painting, candles), show the neighbor out
+- [x] Direct questions → Deflect, Truth or Lie → Rumor Ledger Rules (HUD panel)
+- [x] Rule-break checks and contradiction detection
+- [x] 2 events: Moonrise (the moon actually rises in the window), Doorbell: Neighbor
+- [x] Typed "say" box (Enter) that runs the trigger-word matcher with earshot (stands in for voice)
+- [x] HUD: Cover, Strikes, course clock, event log. Results screen with tips, stars, review, stats.
+- [x] Vitest coverage for topic passing, meters, ledger, contradictions, determinism
+- [x] All numbers in `shared/tuning.ts`, copied into each dinner. Live tuning panel (`` ` ``).
+- [x] Greybox additions: mirror + cover, light switch, closed-curtain mesh
 
-**Done when:** a 10-minute, 4-guest dinner on the debug board has **at least 3 "oh no" chain reactions** (one fix causes the next problem), and someone watching you play wants a turn. If it isn't fun here, fix the rules here and don't move on.
+**Done when:** a 10-minute, 4-guest dinner in the greybox room has **at least 3 "oh no" chain reactions** (one fix causes the next problem), and someone watching you play wants a turn. If it isn't fun, fix the rules here and don't move on.
+
+*Status:* every item is built and covered by `shared/src/sim/dinner.test.ts` (31 tests, including seed replay and a 40-seed bot run), and was checked in the browser. The "Done when" needs a human playtest. A first-pass balance check: an idle player loses in about 3–5 min (usually a hungry werewolf eats someone). A bot that only feeds and answers survives a bit longer, then loses to vampires who were bothered by the uncovered mirror and by being ignored.
 
 ---
 
 ## M2: Solo 3D Dinner · L
 
-**Goal:** the M1 sim, playable in first person in a real house.
+**Goal:** the whole house and the physical side of a dinner: you cook and carry things instead of picking from menus.
 
-- [ ] First-person controller (walk, sprint, crouch, jump) with Rapier character controller
-- [ ] Grab, carry, throw, hold-up-prop
+*Moved to M1 (D-012):* seated guests with bubbles, fuse ring and preview arc. Aiming at guests and objects. Question prompt and Rumor Ledger HUD. Cover/Strikes HUD and results screen. Curtains, lights and mirror interactables.
+
+- [ ] First-person controller additions: crouch, jump
+- [ ] Grab, carry, throw, physically hold up a prop (replaces M1's "aim and press E")
 - [ ] Greybox house **script** (`house/house_a.py`): dining room, kitchen, hallway with front door, garage (dog), bathroom (mirror), cellar
-- [ ] Room graph (rooms + doors) read from `house_a.layout.json`, used for earshot, visibility and later muffling
-- [ ] Greybox prop scripts: chair, plate, bowl, pot, curtain, mirror, record player, dog (each with `socket_*`/`interact_*`)
+- [ ] Room graph (rooms + doors) read from `house_a.layout.json`, used for earshot, visibility and later muffling (replaces M1's distance check)
+- [ ] Greybox prop scripts: chair, plate, bowl, pot, record player, dog (each with `socket_*`/`interact_*`)
 - [ ] Placeholder humanoid rig script with `sit_idle`, `eat`, `flinch`, `walk` clips, played through `AnimationMixer`
-- [ ] Placeholder guests seated at the table: head-look, topic bubble icons, fuse ring, preview arc
-- [ ] Small Talk wheel (RMB), aimed at a guest
-- [ ] Direct question prompt + Lie wheel
-- [ ] Diegetic Rumor Ledger (kitchen chalkboard) + HUD strip
-- [ ] Simple kitchen: fridge → chop → hob/oven → plate, with dish tags
-- [ ] Interactables: curtains, lights, front door + invite, mirror tea-towel, record player
-- [ ] Line of sight from guests' heads (Rapier raycasts) for Slips and Rule breaks
-- [ ] Cover / Strikes HUD, results screen (tips + grade, awards stubbed)
+- [ ] Small Talk wheel (RMB) replacing M1's number keys
+- [ ] Diegetic Rumor Ledger (kitchen chalkboard) alongside the HUD panel
+- [ ] Simple kitchen: fridge → chop → hob/oven → plate, with dish tags (replaces M1's serve menu with cooldowns)
+- [ ] Front door + invite (vampire arrivals), record player
+- [ ] Line of sight from guests' heads (Rapier raycasts) for Slips and Rule breaks (replaces M1's "near the guest or lights off")
 - [ ] Session flow: Booking → Prep → Arrivals → 3 Courses → Dessert → Results
 
-**Done when:** you can play a full dinner solo in 3D, from Booking Card to Results, with all three MVP guests, and every M1 mechanic works through physical interaction.
+**Done when:** you can play a full dinner solo in 3D, from Booking Card to Results, cooking and carrying every dish yourself, with guests arriving at the door.
 
 ---
 

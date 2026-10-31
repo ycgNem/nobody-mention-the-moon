@@ -81,9 +81,10 @@ def window():
     moon = prims.cylinder("moon", 0.22, 0.02, (0.35, HY + 0.85, 1.85), "moon", segments=12)
     moon.rotation_euler = (math.radians(90), 0, 0)
 
-    # Curtains, open, either side of the window.
+    # Curtains, open, either side of the window. The client swaps these for curtain_closed.
     for side, x in (("l", w0 - 0.2), ("r", w1 + 0.2)):
         prims.box(f"curtain_{side}", (0.4, 0.08, 1.9), (x, HY - 0.1, 1.55), "curtain_plum", bevel=0.02)
+    prims.box("curtain_closed", (WIN_W + 0.5, 0.08, 1.9), (0, HY - 0.14, 1.55), "curtain_plum", bevel=0.02)
     prims.cylinder("curtain_rod", 0.015, 0.02, (0, HY - 0.1, 2.52), "brass", segments=6)
     prims.box("curtain_rod_bar", (WIN_W + 1.0, 0.03, 0.03), (0, HY - 0.1, 2.52), "brass")
     sockets.interact("curtain", (0, HY - 0.15, 1.5), kind="curtain")
@@ -143,6 +144,16 @@ def chairs():
 def furniture():
     solid("sideboard", -HX, -HX + 0.5, -0.9, 0.9, 0, 0.9, "wood_dark", bevel=0.02)
     prims.box("sideboard_top", (0.55, 1.85, 0.04), (-HX + 0.25, 0, 0.92), "wood_light", bevel=0.01)
+    # Mirror over the sideboard. The client shows mirror_cover when it's covered.
+    prims.box("mirror_frame", (0.05, 0.75, 0.95), (-HX + 0.03, 0, 1.6), "brass", bevel=0.015)
+    prims.box("mirror_glass", (0.02, 0.62, 0.82), (-HX + 0.065, 0, 1.6), "glass")
+    prims.box("mirror_cover", (0.04, 0.85, 1.05), (-HX + 0.09, 0, 1.58), "cloth_cream", bevel=0.01)
+    sockets.interact("mirror", (-HX + 0.2, 0, 1.6), kind="mirror")
+    # Light switch by the door.
+    prims.box("light_switch", (0.02, 0.08, 0.12), (HX - 0.01, DOOR_Y - 0.75, 1.25), "brass")
+    sockets.interact("lights", (HX - 0.1, DOOR_Y - 0.75, 1.25), kind="lights")
+    # Candles as a "change the subject" prop.
+    sockets.interact("candles", (0, 0, TABLE_H + 0.2), kind="prop_candles")
     # Painting on the south wall.
     prims.box("painting_frame", (1.0, 0.04, 0.7), (1.5, -HY + 0.04, 1.6), "brass", bevel=0.01)
     prims.box("painting_canvas", (0.85, 0.02, 0.55), (1.5, -HY + 0.065, 1.6), "cloth_red")

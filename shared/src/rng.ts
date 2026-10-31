@@ -21,12 +21,18 @@ export function hashSeed(seed: string): number {
 }
 
 export function createRng(seed: string | number): Rng {
-  let a = typeof seed === 'string' ? hashSeed(seed) : seed >>> 0;
+  return rngOn({ rngState: typeof seed === 'string' ? hashSeed(seed) : seed >>> 0 });
+}
 
+/**
+ * An Rng whose state lives on `holder.rngState`, so a plain serializable object (like a
+ * DinnerState) carries its own random stream and can be saved, copied or replayed.
+ */
+export function rngOn(holder: { rngState: number }): Rng {
   // mulberry32
   const next = (): number => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
+    holder.rngState = (holder.rngState + 0x6d2b79f5) >>> 0;
+    let t = holder.rngState;
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
