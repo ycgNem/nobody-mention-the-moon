@@ -2,14 +2,16 @@
 // Every lie adds a Rule to the Rumor Ledger. Some rules restrict the hosts; some are claims
 // that only matter if they contradict another claim.
 
-/** Host actions a rule can forbid. */
+/** Host actions a rule can forbid. They only count when a guest can see you do them. */
 export type RuleCheck =
   | 'open_curtains'
-  | 'serve_garlic'
+  | 'garlic'
   | 'uncover_mirror'
   | 'lights_on'
   | 'talk_pets'
-  | 'talk_family';
+  | 'talk_family'
+  | 'play_music'
+  | 'open_door';
 
 export interface RuleDef {
   id: string;
@@ -39,8 +41,8 @@ export const RULES: readonly RuleDef[] = [
   {
     id: 'no_garlic',
     claim: '"Garlic is poison to us too."',
-    rule: "Don't serve garlic.",
-    check: 'serve_garlic',
+    rule: "Don't touch garlic where guests can see.",
+    check: 'garlic',
     contradicts: [],
   },
   {
@@ -91,6 +93,20 @@ export const RULES: readonly RuleDef[] = [
     rule: 'You claimed a huge family.',
     check: null,
     contradicts: ['no_family'],
+  },
+  {
+    id: 'no_music',
+    claim: "They say the Hollows can't abide music.",
+    rule: "Don't touch the record player where guests can see.",
+    check: 'play_music',
+    contradicts: [],
+  },
+  {
+    id: 'no_doors',
+    claim: 'A Hollow never opens a door for themselves.',
+    rule: "Don't open the front door where guests can see.",
+    check: 'open_door',
+    contradicts: [],
   },
   {
     id: 'never_eat',

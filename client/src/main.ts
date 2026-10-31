@@ -1,26 +1,21 @@
 import './style.css';
 import './dinner.css';
 import RAPIER from '@dimforge/rapier3d-compat';
-import {
-  DEFAULT_ROOM_CODE,
-  MSG,
-  NET,
-  PLAYER,
-  normalizeRoomCode,
-  parseLayout,
-  type Layout,
-  type MoveMessage,
-  type Vec3,
-} from '@moon/shared';
-import { DinnerSession, newSeed } from './dinner/DinnerSession.ts';
+import { DEFAULT_ROOM_CODE, FIRST_HOUSE, HOUSE_IDS, isHouseId, HOUSES, normalizeRoomCode, parseLayout, type Layout } from '@moon/shared';
+import { AudioEngine } from './audio/index.ts';
+import { GameClient } from './game/GameClient.ts';
 import { Controls } from './input/controls.ts';
-import { joinDinner, type DinnerRoom, type PlayerView } from './net/connection.ts';
-import { LocalPlayer } from './players/LocalPlayer.ts';
-import { RemotePlayers } from './players/RemotePlayers.ts';
-import { createStage, loadHouse, type House } from './render/stage.ts';
+import { LocalLink, NetLink, type GameLink } from './net/link.ts';
+import { ModelLibrary } from './render/models.ts';
+import { PROP_MODELS } from './render/PropViews.ts';
+import { createStage } from './render/stage.ts';
+import { SettingsMenu, type SettingsValues } from './ui/Settings.ts';
 
-const HOUSE = 'greybox';
 const NAME_KEY = 'moon.name';
+/** A static build with no game server (GitHub Pages): solo only. Set VITE_SOLO_ONLY=1 at build time. */
+const SOLO_ONLY = (import.meta.env.VITE_SOLO_ONLY as string | undefined) === '1';
+/** Loaded up front: the menu's house and everything every dinner needs. Other houses load on the way. */
+const MODELS = [FIRST_HOUSE, 'humanoid', 'hats', ...PROP_MODELS];
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const joinForm = $<HTMLFormElement>('join');
@@ -29,38 +24,92 @@ const codeInput = $<HTMLInputElement>('join-code');
 const joinError = $<HTMLParagraphElement>('join-error');
 const soloButton = $<HTMLButtonElement>('join-solo');
 const hud = $<HTMLDivElement>('hud');
+const loading = $<HTMLParagraphElement>('join-loading');
 
 const stage = createStage($('game'));
 const controls = new Controls(stage.renderer.domElement);
-const remotes = new RemotePlayers(stage.scene);
+const audio = new AudioEngine();
+const lib = new ModelLibrary();
+const layouts = new Map<string, Layout>();
+let client: GameClient | null = null;
+let link: GameLink | null = null;
 
-// Start loading everything we can before the player hits Join.
-const ready: Promise<{ layout: Layout; house: House }> = Promise.all([
+const settings: SettingsMenu = new SettingsMenu(document.body, controls, audio, {
+  apply: (s) => applySettings(s),
+  testMic: async () => {
+    const voice = client?.voice;
+    if (!voice) return 'Join a dinner first (and click once so the browser allows sound).';
+    const r = await voice.enableMic();
+    return r === 'ok' ? 'Microphone on. Hold V to talk.' : r === 'denied' ? 'The browser blocked the microphone.' : r === 'insecure' ? 'Voice needs https (or localhost).' : 'No microphone found.';
+  },
+  speechCheck: (): string => client?.listening.describe(settings.values.speech) ?? 'Join a dinner first.',
+  voices: () => client?.voicePeers() ?? [],
+  setVoice: (id, change) => client?.setPeerVoice(id, change),
+  leave: () => leave('You left the dinner.'),
+});
+$('settings-button').addEventListener('click', () => settings.toggle());
+
+function prefsFrom(s: SettingsValues): GameClient['prefs'] {
+  return { voiceMode: s.voiceMode, fov: s.fov, meters: s.meters, speech: s.speech, triggers: s.triggers };
+}
+
+function applySettings(s: SettingsValues): void {
+  if (!client) return;
+  client.prefs = prefsFrom(s);
+  client.voice?.setMode(s.voiceMode);
+  // Listening needs the mic; ask for it when the player turns the setting on.
+  if (s.speech && client.voice?.micState === 'off') void client.voice.enableMic();
+}
+
+// Start loading everything we can before the player hits Join. Every house's layout is small and
+// loads now (solo play needs them all to move house); the houses' models load when they're needed.
+loading.hidden = false;
+const ready: Promise<Layout[]> = Promise.all([
   RAPIER.init(),
-  loadHouse(stage.scene, HOUSE),
-  fetch(`/models/${HOUSE}.layout.json`).then((r) => r.json()),
-]).then(([, house, json]) => ({ house, layout: parseLayout(json) }));
+  lib.preload(MODELS),
+  Promise.all(HOUSE_IDS.map((id) => fetch(`${import.meta.env.BASE_URL}models/${id}.layout.json`).then(async (r) => parseLayout(await r.json())))),
+]).then(([, , all]) => {
+  loading.hidden = true;
+  for (const l of all) layouts.set(l.asset, l);
+  const house = menuHouse();
+  if (house) stage.scene.add(house);
+  return all;
+});
 
-// A slow orbit behind the join panel.
+function menuHouse() {
+  return lib.get(FIRST_HOUSE)?.scene ?? null;
+}
+
+// A slow orbit around the house behind the join panel.
 let orbiting = true;
 const orbitStart = performance.now();
 function orbit(now: number) {
   if (!orbiting) return;
   const t = (now - orbitStart) / 1000;
-  stage.camera.position.set(Math.sin(t * 0.1) * 3, 2.2, Math.cos(t * 0.1) * 2.2);
-  stage.camera.lookAt(0, 0.8, 0);
+  stage.camera.position.set(-3 + Math.sin(t * 0.08) * 14, 6, 2 + Math.cos(t * 0.08) * 14);
+  stage.camera.lookAt(-3, 0.5, 0);
   stage.render();
   requestAnimationFrame(orbit);
 }
 requestAnimationFrame(orbit);
 
+if (SOLO_ONLY) {
+  // No server to join here: keep the solo button and say where online play lives.
+  for (const el of [codeInput.closest('label'), joinForm.querySelector('button[type="submit"]')]) el?.remove();
+  const note = document.createElement('p');
+  note.className = 'tag';
+  note.textContent = 'This build is solo only. Online dinners need the game server (see docs/HOSTING.md).';
+  soloButton.after(note);
+  soloButton.classList.remove('secondary');
+  soloButton.textContent = 'Play solo';
+}
 prefillJoin();
 
 joinForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  void join();
+  void start(SOLO_ONLY);
 });
-soloButton.addEventListener('click', () => void playSolo());
+soloButton.addEventListener('click', () => void start(true));
 
 function setBusy(busy: boolean) {
   for (const b of joinForm.querySelectorAll('button')) b.disabled = busy;
@@ -81,169 +130,153 @@ function rememberName(name: string) {
   }
 }
 
-async function join() {
-  const name = nameInput.value.trim();
+export function newSeed(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const bytes = crypto.getRandomValues(new Uint8Array(4));
+  return `MOON-${[...bytes].map((b) => chars[b % chars.length]).join('')}`;
+}
+
+async function start(solo: boolean) {
+  const name = nameInput.value.trim() || 'Host';
   const code = normalizeRoomCode(codeInput.value) || DEFAULT_ROOM_CODE;
   setBusy(true);
   try {
-    const { layout, house } = await ready;
-    const room = await joinDinner({ code, name });
+    const all = await ready;
+    void audio.resume();
+    let next: GameLink;
+    if (solo) {
+      const local = new LocalLink(all, name, newSeed);
+      const seed = new URLSearchParams(location.search).get('seed');
+      if (seed) local.send({ c: 'settings', seed });
+      next = local;
+    } else {
+      next = await NetLink.join({ code, name });
+    }
     rememberName(name);
     const url = new URL(location.href);
-    url.searchParams.set('room', code);
-    url.searchParams.delete('solo');
+    if (solo) {
+      url.searchParams.set('solo', '1');
+      url.searchParams.delete('room');
+    } else {
+      url.searchParams.set('room', code);
+      url.searchParams.delete('solo');
+    }
     history.replaceState(null, '', url);
-    const me = await waitForSelf(room);
-    startPlaying({ layout, house, room, spawn: [me.x, me.y, me.z], yaw: me.yaw });
+    await play(next);
   } catch (err) {
     console.error(err);
-    showError(`Couldn't join: ${err instanceof Error ? err.message : String(err)}. Is the server running? You can still play solo.`);
+    showError(
+      solo
+        ? `Couldn't start: ${err instanceof Error ? err.message : String(err)}`
+        : `Couldn't join: ${err instanceof Error ? err.message : String(err)}. Is the server running? You can still play solo.`,
+    );
   }
 }
 
-async function playSolo() {
-  setBusy(true);
-  try {
-    const { layout, house } = await ready;
-    rememberName(nameInput.value.trim());
-    const url = new URL(location.href);
-    url.searchParams.set('solo', '1');
-    history.replaceState(null, '', url);
-    const spawn = layout.spawns[0];
-    if (!spawn) throw new Error(`${HOUSE} has no spawn points`);
-    startPlaying({ layout, house, room: null, spawn: spawn.position, yaw: spawn.yaw });
-  } catch (err) {
-    console.error(err);
-    showError(`Couldn't start: ${err instanceof Error ? err.message : String(err)}`);
-  }
-}
-
-function waitForSelf(room: DinnerRoom): Promise<PlayerView> {
-  return new Promise((resolve) => {
-    const check = () => {
-      const me = room.state.players?.get(room.sessionId);
-      if (me) {
-        room.onStateChange.remove(check);
-        resolve(me);
-      }
-    };
-    room.onStateChange(check);
-    check();
+async function play(next: GameLink) {
+  link = next;
+  next.onLeave((reason) => {
+    if (link === next) leave(`Disconnected from the dinner (${reason}).`);
   });
-}
-
-interface PlayOptions {
-  layout: Layout;
-  house: House;
-  /** null = solo, no server. */
-  room: DinnerRoom | null;
-  spawn: Vec3;
-  yaw: number;
-}
-
-function startPlaying({ layout, house, room, spawn, yaw }: PlayOptions) {
-  const local = new LocalPlayer(layout, spawn);
-  controls.yaw = yaw;
-  controls.pitch = 0;
-
+  await enterHouse(next, next.view().asset || FIRST_HOUSE);
   orbiting = false;
+  const menu = menuHouse();
+  if (menu) stage.scene.remove(menu);
   joinForm.hidden = true;
   hud.hidden = false;
-  $('room-badge').textContent = room ? `Room ${room.state.code} · dinner is local to you until M3` : 'Solo dinner';
+  if (import.meta.env.DEV) exposeDevHandle(next);
 
-  const seed = new URLSearchParams(location.search).get('seed') ?? newSeed();
-  const session = new DinnerSession(stage, house, layout, controls, hud, seed);
-
-  let pingMs = 0;
-  let snaps = 0;
-  let running = true;
-  const pingTimer = room ? setInterval(() => room.ping((ms) => (pingMs = ms)), 2000) : undefined;
-
-  if (import.meta.env.DEV) {
-    // Dev-only handle for scripted testing from the console, e.g. __moon.session.advance(30)
-    (window as unknown as { __moon: object }).__moon = {
-      controls,
-      local,
-      room,
-      session,
-      stage,
-      renderOnce: () => {
-        session.update(0, local.feet);
-        stage.render();
-      },
-    };
-  }
-
-  room?.onLeave((code) => {
-    clearInterval(pingTimer);
-    running = false;
-    session.dispose();
-    hud.hidden = true;
-    joinForm.hidden = false;
-    showError(`Disconnected from the dinner (code ${code}).`);
-    remotes.sync([], room.sessionId);
-    document.exitPointerLock();
-    orbiting = true;
-    requestAnimationFrame(orbit);
-  });
-
+  // The game can move house (the lobby's pick, or the dinner seed's): follow it.
+  let moving = false;
   let last = performance.now();
-  let sendAccumulator = 0;
-  let rosterKey = '';
-
   const frame = (now: number) => {
-    if (!running) return;
-    const dt = Math.min((now - last) / 1000, 0.1);
+    if (link !== next) return;
+    const dt = (now - last) / 1000;
     last = now;
-
-    local.update(dt, controls.intent());
-    const [fx, fy, fz] = local.feet;
-
-    const players: [string, PlayerView][] = [];
-    if (room) {
-      room.state.players.forEach((p, id) => players.push([id, p]));
-      const self = room.state.players.get(room.sessionId);
-      if (self && local.reconcile([self.x, self.y, self.z], dt)) snaps++;
-      sendAccumulator += dt;
-      if (sendAccumulator >= 1 / NET.sendRateHz) {
-        sendAccumulator = 0;
-        room.send(MSG.move, { x: fx, y: fy, z: fz, yaw: controls.yaw } satisfies MoveMessage);
-      }
-      remotes.sync(players, room.sessionId);
-      remotes.update(dt);
+    const c = client;
+    // While the next house loads, the old one holds still (solo pauses; online catches up after).
+    if (c && !moving) c.frame(dt);
+    const asset = next.view().asset;
+    if (!moving && asset && c?.asset !== asset) {
+      moving = true;
+      void enterHouse(next, asset).finally(() => (moving = false));
     }
-
-    stage.camera.position.set(fx, fy + PLAYER.eyeHeight, fz);
-    stage.camera.rotation.set(controls.pitch, controls.yaw, 0);
-    session.update(dt, local.feet);
-    stage.render();
-
-    const key = players.map(([id, p]) => `${id}:${p.name}:${p.color}`).join('|');
-    if (key !== rosterKey) {
-      rosterKey = key;
-      renderRoster(players, room?.sessionId ?? '');
-    }
-    $('net').textContent = room
-      ? `${players.length}/${NET.maxPlayers} hosts · ping ${pingMs} ms · snaps ${snaps}`
-      : `solo · seed ${session.state.seed}`;
-
     requestAnimationFrame(frame);
   };
   requestAnimationFrame(frame);
 }
 
-function renderRoster(players: [string, PlayerView][], selfId: string) {
-  const list = $('roster');
-  list.replaceChildren(
-    ...players.map(([id, p]) => {
-      const li = document.createElement('li');
-      const swatch = document.createElement('span');
-      swatch.className = 'swatch';
-      swatch.style.background = p.color;
-      li.append(swatch, `${p.name}${id === selfId ? ' (you)' : ''}`);
-      return li;
-    }),
-  );
+/** Builds the client for one house (loading its model first), replacing the previous one. */
+async function enterHouse(forLink: GameLink, asset: string): Promise<void> {
+  const name = isHouseId(asset) ? HOUSES[asset].label : asset;
+  if (client) client.hud.toast(`Off to ${name.toLowerCase()}…`, 'big', 2);
+  await lib.preload([asset]);
+  const layout = layouts.get(asset);
+  const house = lib.instance(asset);
+  if (!layout || !house) throw new Error(`${asset} didn't load`);
+  if (link !== forLink) return;
+  client?.dispose();
+  client = new GameClient({
+    stage,
+    lib,
+    layout,
+    house,
+    link: forLink,
+    controls,
+    audio,
+    hudParent: hud,
+    prefs: prefsFrom(settings.values),
+    onMenu: () => settings.toggle(),
+  });
+}
+
+/** Dev-only handle for scripted testing, e.g. __moon.session.advance(30); __moon.renderOnce() */
+function exposeDevHandle(l: GameLink) {
+  (window as unknown as { __moon: object }).__moon = {
+    controls,
+    get local() {
+      return client?.local;
+    },
+    room: l,
+    get client() {
+      return client;
+    },
+    session: {
+      advance: (seconds: number) => (l instanceof LocalLink ? l.advance(seconds) : undefined),
+      get state() {
+        return l.view();
+      },
+      send: (cmd: Parameters<GameLink['send']>[0]) => l.send(cmd),
+      /** Moves you there now (solo only), e.g. teleport([-5, 0, 0.5], Math.PI). */
+      teleport: (feet: [number, number, number], yaw?: number) => {
+        if (!(l instanceof LocalLink)) return;
+        l.teleport(feet, yaw);
+        client?.local.teleport(feet);
+        if (yaw !== undefined) controls.yaw = yaw;
+      },
+    },
+    stage,
+    audio,
+    renderOnce: () => client?.frame(1 / 60, false),
+  };
+}
+
+function leave(message: string) {
+  const c = client;
+  const l = link;
+  client = null;
+  link = null;
+  c?.dispose();
+  l?.dispose();
+  settings.toggle(false);
+  hud.hidden = true;
+  joinForm.hidden = false;
+  showError(message);
+  document.exitPointerLock();
+  const menu = menuHouse();
+  if (menu) stage.scene.add(menu);
+  orbiting = true;
+  requestAnimationFrame(orbit);
 }
 
 function prefillJoin() {
@@ -256,7 +289,7 @@ function prefillJoin() {
   }
   nameInput.value = params.get('name') ?? saved;
   codeInput.value = normalizeRoomCode(params.get('room') ?? '') || DEFAULT_ROOM_CODE;
-  if (params.get('solo') === '1') void playSolo();
-  else if (params.get('autojoin') === '1' && nameInput.value) void join();
-  else (nameInput.value ? codeInput : nameInput).focus();
+  if (params.get('solo') === '1') void start(true);
+  else if (!SOLO_ONLY && params.get('autojoin') === '1' && nameInput.value) void start(false);
+  else (nameInput.value && !SOLO_ONLY ? codeInput : nameInput).focus();
 }

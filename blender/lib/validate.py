@@ -7,7 +7,9 @@ import bpy
 from . import palette
 from .layout import EMPTY_PREFIXES, PREFIX_DOOR, PREFIX_INTERACT
 
-TRI_BUDGETS = {"prop": 500, "character": 3000, "house": 60000}
+# "character" holds every optional part (outfits, hair, slip kits) in one file; any one dressed
+# figure stays near 3k. A "kit" is a set of small prototypes the client clones by name.
+TRI_BUDGETS = {"prop": 500, "character": 10500, "kit": 6000, "house": 60000}
 
 
 def triangle_count(obj: bpy.types.Object) -> int:
@@ -39,6 +41,9 @@ def check(kind: str) -> tuple[list[str], int]:
             if mats != [palette.MATERIAL_NAME]:
                 problems.append(f"{name}: must use only the '{palette.MATERIAL_NAME}' material (has {mats})")
             tris += triangle_count(obj)
+        elif obj.type == "ARMATURE":
+            if tuple(round(s, 6) for s in obj.scale) != (1.0, 1.0, 1.0):
+                problems.append(f"{name}: armature scale must be applied (is {tuple(obj.scale)})")
         else:
             problems.append(f"{name}: unsupported object type {obj.type}")
 

@@ -1,4 +1,5 @@
-// Wire contract between client and server. State schema lives in server/src/schema.ts.
+// Wire contract between client and server. The state schema mirrors GameView
+// (shared/src/game/types.ts); see server/src/schema.ts.
 
 export const ROOM_NAME = 'dinner';
 
@@ -10,29 +11,28 @@ export interface JoinOptions {
   name: string;
 }
 
-/** Client → server: where the client's own prediction put it. The server validates. */
-export interface MoveMessage {
-  x: number;
-  y: number;
-  z: number;
-  yaw: number;
+export const MSG = {
+  /** Client → server: a Command. */
+  cmd: 'cmd',
+  /** Server → client: GameEvent[] (shared ones broadcast, private notes to one player). */
+  events: 'ev',
+  /** Both ways: WebRTC signaling. Client sends VoiceRelay, receives VoiceDelivery. */
+  voice: 'voice',
+} as const;
+
+export interface VoiceRelay {
+  to: string;
+  signal: unknown;
 }
 
-export const MSG = {
-  move: 'move',
-} as const;
+export interface VoiceDelivery {
+  from: string;
+  signal: unknown;
+}
 
 export function normalizeRoomCode(code: string): string {
   return code
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, '')
     .slice(0, 4);
-}
-
-export function isMoveMessage(v: unknown): v is MoveMessage {
-  if (typeof v !== 'object' || v === null) return false;
-  const m = v as Record<string, unknown>;
-  return (['x', 'y', 'z', 'yaw'] as const).every(
-    (k) => typeof m[k] === 'number' && Number.isFinite(m[k]),
-  );
 }

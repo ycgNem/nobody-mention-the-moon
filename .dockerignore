@@ -1,0 +1,24 @@
+# Only package manifests, TypeScript sources, configs and client/public/models go into the image.
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+.vite
+.git
+.gitignore
+.claude
+.vscode
+.playwright-mcp
+.env
+.env.*
+npm-debug.log*
+
+# The speech model is downloaded and checked in the Dockerfile, never copied from a dev machine.
+client/public/speech
+
+# Build-time only, and the built .glb/.layout.json files are already in client/public/models.
+blender
+docs
+*.md
+Dockerfile
+.dockerignore
+fly.toml

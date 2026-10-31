@@ -20,6 +20,13 @@ export function hashSeed(seed: string): number {
   return h >>> 0;
 }
 
+/** Deterministic pick in [0, n) from a seed string (the "surprise me" party size and house). */
+export function hashPick(seed: string, n: number): number {
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  return h % n;
+}
+
 export function createRng(seed: string | number): Rng {
   return rngOn({ rngState: typeof seed === 'string' ? hashSeed(seed) : seed >>> 0 });
 }

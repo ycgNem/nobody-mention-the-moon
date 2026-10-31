@@ -1,0 +1,53 @@
+# Fly.io config for the playtest server (docs/HOSTING.md, D-013).
+# One machine serves the built client, /healthz, /ice and the Colyseus WebSocket on one origin.
+#
+# First deploy:  fly launch --no-deploy --copy-config   (pick your own app name and region)
+#                fly deploy --ha=false
+# Later deploys: fly deploy --ha=false --build-arg BUILD_ID=$(git rev-parse --short HEAD)
+#
+# Keep it at exactly ONE machine: dinners live in that process's memory, so a second machine
+# would split friends with the same room code into different dinners (`fly scale count 1`).
+
+app = "nobody-mention-the-moon"   # app names are global on Fly: change this to yours
+primary_region = "lhr"            # the region nearest your players: `fly platform regions`
+kill_signal = "SIGTERM"
+kill_timeout = "10s"
+
+[build]
+  [build.args]
+    SPEECH_MODEL = "1"            # "0" skips the 41 MB Vosk model (typed chat still triggers guests)
+
+[env]
+  NODE_ENV = "production"
+  PORT = "8080"
+  # TURN for voice: set with `fly secrets set`, never here (docs/HOSTING.md#voice-turn).
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Never stop the machine: rooms, and every dinner in them, would vanish with it.
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    # Each player holds one WebSocket for the whole dinner.
+    type = "connections"
+    soft_limit = 400
+    hard_limit = 500
+
+  [[http_service.checks]]
+    grace_period = "15s"
+    interval = "30s"
+    timeout = "5s"
+    method = "GET"
+    path = "/healthz"
+
+[deploy]
+  # Replaces the one machine (brief downtime) rather than running two side by side, which could
+  # send a player's matchmaking request and WebSocket to different processes.
+  strategy = "rolling"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

@@ -12,6 +12,7 @@
     "@colyseus/schema": "5.0.43",
     "@colyseus/sdk": "0.18.9",
     "@dimforge/rapier3d-compat": "0.21.0",
+    "@lichess-org/vosk-browser": "0.0.3",
     "@moon/shared": "*",
     "three": "0.186.1"
   },

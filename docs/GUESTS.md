@@ -143,7 +143,7 @@ Each occasion changes the starting rumor pool, event weights and seating, and ad
 | **Doorbell: Neighbor** | 🟢 | Gary arrives (see Special visitors) |
 | **Toast** | 🟢 | A guest calls "Speech!" at a random player (GDD 7.7) |
 | **The Dog Got Out** | 🟢 | The dog runs for the dining room. Catch it and carry it back to the garage. |
-| **Power Cut** | 🟢 | The house goes dark for ~45 s. Fuse box in the cellar. |
+| **Power Cut** | 🟢 | The house goes dark for ~45 s. Each house hides its fuse box somewhere different (garage, building lobby, cellar). |
 | **Oven Fire** | 🟢 | Fires on its own if a hob is left cooking too long. Smoke alarm (loud). |
 | **Thunderstorm** | 🟡 | Curtains blow open now and then. Lightning counts as a sunlight flash. |
 | **Late Guest** | 🟡 | One more guest arrives mid-course and needs a chair (find one). |

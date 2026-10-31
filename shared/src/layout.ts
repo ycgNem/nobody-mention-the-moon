@@ -41,6 +41,10 @@ export interface LayoutDoor {
   a: string;
   b: string;
   position: Vec3;
+  /** Has a door leaf that opens and shuts (mesh + collider `doorleaf_<id>`); false = archway. */
+  leaf: boolean;
+  /** State when a dinner starts. */
+  open: boolean;
 }
 
 export interface LayoutInteractable {
@@ -55,8 +59,15 @@ export interface LayoutSpawn {
   yaw: number;
 }
 
+/** A named anchor point (`socket_*` empty without a parent): prop homes, plate spots, paths. */
+export interface LayoutSocket {
+  id: string;
+  position: Vec3;
+  yaw: number;
+}
+
 export interface Layout {
-  version: 1;
+  version: 2;
   asset: string;
   colliders: LayoutCollider[];
   seats: LayoutSeat[];
@@ -64,6 +75,7 @@ export interface Layout {
   doors: LayoutDoor[];
   interactables: LayoutInteractable[];
   spawns: LayoutSpawn[];
+  sockets: LayoutSocket[];
 }
 
 export class LayoutError extends Error {}
@@ -124,12 +136,16 @@ function collider(v: unknown, path: string): LayoutCollider {
 /** Validates untrusted JSON (fetched or read from disk) into a Layout. Throws LayoutError. */
 export function parseLayout(json: unknown): Layout {
   const o = obj(json, 'layout');
-  if (o.version !== 1) fail('layout.version', `unsupported version ${String(o.version)}`);
+  if (o.version !== 1 && o.version !== 2) fail('layout.version', `unsupported version ${String(o.version)}`);
   const list = <T>(key: string, each: (v: unknown, path: string) => T): T[] =>
     arr(o[key], `layout.${key}`).map((v, i) => each(v, `layout.${key}[${i}]`));
 
+  const anchor = (v: unknown, p: string): LayoutSocket => {
+    const s = obj(v, p);
+    return { id: str(s.id, `${p}.id`), position: tuple(s.position, 3, `${p}.position`), yaw: num(s.yaw, `${p}.yaw`) };
+  };
   return {
-    version: 1,
+    version: 2,
     asset: str(o.asset, 'layout.asset'),
     colliders: list('colliders', collider),
     seats: list('seats', (v, p) => {
@@ -151,6 +167,8 @@ export function parseLayout(json: unknown): Layout {
         a: str(d.a, `${p}.a`),
         b: str(d.b, `${p}.b`),
         position: tuple(d.position, 3, `${p}.position`),
+        leaf: d.leaf === true,
+        open: d.open !== false,
       };
     }),
     interactables: list('interactables', (v, p) => {
@@ -161,9 +179,34 @@ export function parseLayout(json: unknown): Layout {
         position: tuple(it.position, 3, `${p}.position`),
       };
     }),
-    spawns: list('spawns', (v, p) => {
-      const s = obj(v, p);
-      return { id: str(s.id, `${p}.id`), position: tuple(s.position, 3, `${p}.position`), yaw: num(s.yaw, `${p}.yaw`) };
-    }),
+    spawns: list('spawns', anchor),
+    // Version 1 layouts (M0 greybox) had no sockets.
+    sockets: o.version === 1 ? [] : list('sockets', anchor),
   };
+}
+
+/** Seats sorted into a clockwise ring as seen from above (north at the top). Sim seat i = ring[i]. */
+export function ringSeats(layout: Layout): LayoutSeat[] {
+  const seats = layout.seats;
+  if (seats.length === 0) return [];
+  const cx = seats.reduce((s, x) => s + x.position[0], 0) / seats.length;
+  const cz = seats.reduce((s, x) => s + x.position[2], 0) / seats.length;
+  return [...seats].sort(
+    (a, b) => Math.atan2(a.position[2] - cz, a.position[0] - cx) - Math.atan2(b.position[2] - cz, b.position[0] - cx),
+  );
+}
+
+export function findSocket(layout: Layout, id: string): LayoutSocket | undefined {
+  return layout.sockets.find((s) => s.id === id);
+}
+
+export function requireSocket(layout: Layout, id: string): LayoutSocket {
+  const s = findSocket(layout, id);
+  if (!s) throw new LayoutError(`${layout.asset}: missing socket_${id}`);
+  return s;
+}
+
+/** Sockets whose id starts with `prefix`, sorted by id. */
+export function socketsWithPrefix(layout: Layout, prefix: string): LayoutSocket[] {
+  return layout.sockets.filter((s) => s.id.startsWith(prefix)).sort((a, b) => a.id.localeCompare(b.id));
 }

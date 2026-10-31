@@ -49,7 +49,7 @@ def _strip(name: str, prefix: str) -> str:
 
 
 def extract(asset: str) -> dict:
-    colliders, seats, spawns, rooms, doors, interactables = [], [], [], [], [], []
+    colliders, seats, spawns, rooms, doors, interactables, anchors = [], [], [], [], [], [], []
     for obj in sorted(bpy.context.scene.objects, key=lambda o: o.name):
         if obj.type != "EMPTY":
             continue
@@ -73,18 +73,29 @@ def extract(asset: str) -> dict:
         elif name.startswith(PREFIX_ROOM):
             rooms.append(
                 {
-                    "id": _strip(name, PREFIX_ROOM),
+                    "id": obj.get("room_id", _strip(name, PREFIX_ROOM)),
                     "center": to_three(loc),
                     "halfExtents": [_r(abs(scale.x)), _r(abs(scale.z)), _r(abs(scale.y))],
                 }
             )
         elif name.startswith(PREFIX_DOOR):
-            doors.append({"id": _strip(name, PREFIX_DOOR), "a": obj["a"], "b": obj["b"], "position": to_three(loc)})
+            doors.append(
+                {
+                    "id": _strip(name, PREFIX_DOOR),
+                    "a": obj["a"],
+                    "b": obj["b"],
+                    "position": to_three(loc),
+                    "leaf": bool(obj.get("leaf", 0)),
+                    "open": bool(obj.get("open", 1)),
+                }
+            )
         elif name.startswith(PREFIX_INTERACT):
             interactables.append({"id": _strip(name, PREFIX_INTERACT), "kind": obj["kind"], "position": to_three(loc)})
+        elif name.startswith(PREFIX_SOCKET) and obj.parent is None:
+            anchors.append({"id": _strip(name, PREFIX_SOCKET), "position": to_three(loc), "yaw": yaw_of(obj)})
 
     return {
-        "version": 1,
+        "version": 2,
         "asset": asset,
         "colliders": colliders,
         "seats": seats,
@@ -92,6 +103,7 @@ def extract(asset: str) -> dict:
         "doors": doors,
         "interactables": interactables,
         "spawns": spawns,
+        "sockets": anchors,
     }
 
 

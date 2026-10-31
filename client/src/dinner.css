@@ -535,3 +535,520 @@
 body.overhead #crosshair {
   display: none;
 }
+
+/* ---- M2–M8 game client ------------------------------------------------------------------ */
+
+.nametag.host.speaking {
+  box-shadow: 0 0 0 2px #7fe0a0;
+}
+.nametag.host.speaking::before {
+  content: '🔊 ';
+}
+.nametag.host.away {
+  opacity: 0.5;
+}
+.nametag.host::after {
+  content: attr(data-status);
+  color: var(--ink-dim);
+}
+
+.dh-bar .alarm {
+  color: #ff5a4a;
+  animation: blink 0.6s steps(2) infinite;
+}
+
+.dh-status,
+.dh-asking {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  background: var(--panel);
+  border-radius: 8px;
+}
+.dh-status {
+  top: 60px;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+.dh-asking {
+  bottom: 170px;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+}
+
+.dh-ledger.open {
+  width: min(520px, calc(100% - 24px));
+  font-size: 0.95rem;
+  max-height: calc(100% - 24px);
+  overflow-y: auto;
+}
+
+/* Panels you click on */
+.dh-lobby,
+.dh-booking,
+.dh-fridge,
+.dh-notes,
+.dh-results,
+.settings,
+#settings-button {
+  pointer-events: auto;
+}
+
+.dh-lobby {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: min(380px, calc(100% - 24px));
+  max-height: calc(100% - 140px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+.dh-lobby label,
+.dh-notes label,
+.settings label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.dh-lobby label.check,
+.settings label.check {
+  justify-content: flex-start;
+}
+.dh-lobby select,
+.dh-lobby input:not([type]),
+.dh-notes select,
+.settings select {
+  font: inherit;
+  background: #241b16;
+  color: var(--ink);
+  border: 1px solid #5b4636;
+  border-radius: 5px;
+  padding: 3px 6px;
+}
+.lb-players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lb-players li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+.lb-players .swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.lb-players b {
+  margin-left: auto;
+  font-weight: normal;
+}
+.lb-players b.ready {
+  color: #8fd18f;
+}
+.lb-players b.notready {
+  color: var(--ink-dim);
+}
+.lb-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.lb-row > span {
+  width: 84px;
+  color: var(--ink-dim);
+}
+.lb-row button,
+.settings button.tx {
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: 1px solid #5b4636;
+  border-radius: 4px;
+  background: #241b16;
+  color: var(--ink);
+  padding: 2px 6px;
+}
+.lb-row button.sw {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+}
+.lb-row button.on {
+  outline: 2px solid var(--accent);
+}
+.lb-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.lb-buttons button,
+.settings .row button {
+  font: inherit;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #241b16;
+}
+.lb-buttons button.secondary,
+.settings .row button.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.dh-booking {
+  position: absolute;
+  top: 60px;
+  right: 12px;
+  width: 300px;
+  font-size: 0.85rem;
+}
+.bk-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.bk-row span,
+.bk-menu span {
+  color: var(--ink-dim);
+}
+.bk-menu div {
+  display: flex;
+  gap: 8px;
+  margin: 2px 0;
+}
+.bk-menu span {
+  width: 70px;
+  flex-shrink: 0;
+}
+.bk-seed {
+  margin-top: 6px;
+  color: var(--ink-dim);
+  font-family: ui-monospace, monospace;
+}
+
+.dh-fridge,
+.dh-notes {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(360px, calc(100% - 32px));
+}
+.dh-fridge .option {
+  cursor: pointer;
+}
+.dh-notes label {
+  margin: 4px 0;
+}
+
+/* Small Talk wheel */
+.dh-wheel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+.wh-guest {
+  position: absolute;
+  transform: translate(-50%, 40px);
+  white-space: nowrap;
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+}
+.wh-card {
+  position: absolute;
+  width: 170px;
+  padding: 8px;
+  background: var(--panel);
+  border: 1px solid #5b4636;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  transition: transform 0.1s;
+}
+.wh-card.pick {
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+.wh-card.cooling {
+  opacity: 0.5;
+}
+.wh-0 {
+  left: -230px;
+  top: -110px;
+}
+.wh-1 {
+  left: -85px;
+  top: -190px;
+}
+.wh-2 {
+  left: 60px;
+  top: -110px;
+}
+
+.dh-charge {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 24px);
+  width: 80px;
+  height: 6px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dh-charge i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.dh-net {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  font: 0.75rem ui-monospace, monospace;
+  max-width: 420px;
+}
+
+.dh-results {
+  max-height: calc(100% - 40px);
+  overflow-y: auto;
+}
+.dh-results .incidents {
+  text-align: left;
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+}
+.dh-results .awards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.dh-results .award {
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  border: 1px solid #5b4636;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+.dh-results .award b {
+  color: var(--accent);
+  font-weight: normal;
+}
+.dh-results .award small {
+  color: var(--ink-dim);
+}
+
+.dh-log .chat {
+  color: #e6f0ff;
+}
+
+.cook-bar {
+  position: relative;
+  width: 64px;
+  height: 7px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+}
+.cook-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: calc(var(--p, 0) * 100%);
+  background: #f2c14e;
+  border-radius: 4px;
+}
+.cook-bar.done::before {
+  background: #8fd18f;
+}
+.cook-bar.burnt::before {
+  background: #5a3a2a;
+  width: 100%;
+}
+.cook-bar::after {
+  content: attr(data-label);
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px #000;
+}
+
+/* Settings */
+#settings-button {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #5b4636;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+body:has(.dh-lobby:not([hidden])) #settings-button {
+  left: auto;
+  right: 12px;
+}
+.settings {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100% - 40px);
+  overflow-y: auto;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+.settings h4 {
+  margin: 8px 0 0;
+  font-weight: normal;
+  color: var(--accent);
+}
+.settings label.range input {
+  flex: 1;
+}
+.settings label.range output {
+  width: 36px;
+  text-align: right;
+}
+.settings .row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.settings .keys label {
+  margin: 2px 0;
+}
+
+/* Accessibility */
+body.large-text .dinner-hud,
+body.large-text .guest-tag,
+body.large-text .nametag,
+body.large-text .tell,
+body.large-text .bubble {
+  font-size: 125%;
+}
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Tonight's occasion, objective and live events (M6/M7). Below the controls hint on the left. */
+.dh-events {
+  position: absolute;
+  top: 150px;
+  left: 12px;
+  width: 290px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+.dh-events > div {
+  padding: 4px 10px;
+  background: var(--panel);
+  border-radius: 6px;
+}
+.ev-occasion b {
+  color: var(--accent);
+  margin-right: 6px;
+}
+.ev-occasion .obj {
+  color: var(--ink-dim);
+}
+.ev-occasion .obj.done {
+  color: #7fd18b;
+}
+.ev-occasion .obj.failed {
+  color: #e8736b;
+  text-decoration: line-through;
+}
+.dh-events .ev.bad {
+  color: #ffb4a8;
+}
+.dh-events .ev.mine {
+  outline: 2px solid var(--accent);
+}
+.dh-events .ev.tip {
+  color: #fff3c4;
+  line-height: 1.4;
+}
+.dh-events .chips {
+  display: inline-flex;
+}
+.ev-bar {
+  height: 5px;
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.ev-bar i {
+  display: block;
+  height: 100%;
+  background: #7fd18b;
+}
+.ev-bar.danger i {
+  background: #e8736b;
+}
+.bk-blurb {
+  margin: -2px 0 8px;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+body.large-text .dh-events {
+  font-size: 0.95rem;
+  width: 340px;
+}
+
+/* Optional trigger-word list (Settings → Accessibility, GDD §12). */
+.dh-triggers {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 260px;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+.dh-triggers h3 {
+  margin: 0 0 4px;
+}
+.dh-triggers .tw b {
+  color: var(--accent);
+}
+.dh-triggers .tw.human b {
+  color: #ffb4a8;
+}
+.settings label.check.inline {
+  display: inline-flex;
+  margin-left: 8px;
+}

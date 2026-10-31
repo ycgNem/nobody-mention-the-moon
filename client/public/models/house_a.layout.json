@@ -1,0 +1,3777 @@
+{
+  "version": 2,
+  "asset": "house_a",
+  "colliders": [
+    {
+      "name": "col_box_backyard_far_tree_0",
+      "shape": "box",
+      "center": [
+        -11.0,
+        1.0,
+        19.0
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_backyard_far_tree_1",
+      "shape": "box",
+      "center": [
+        0.5,
+        1.0,
+        19.6
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_backyard_far_tree_2",
+      "shape": "box",
+      "center": [
+        9.5,
+        1.0,
+        20.2
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_backyard_tree_0",
+      "shape": "box",
+      "center": [
+        1.5,
+        1.0,
+        -10.5
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_backyard_tree_1",
+      "shape": "box",
+      "center": [
+        -9.5,
+        1.0,
+        -9.0
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_barrel_0_0",
+      "shape": "box",
+      "center": [
+        -1.55,
+        -1.22,
+        -11.45
+      ],
+      "halfExtents": [
+        0.26,
+        0.38,
+        0.26
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_barrel_1_0",
+      "shape": "box",
+      "center": [
+        -2.15,
+        -1.22,
+        -11.5
+      ],
+      "halfExtents": [
+        0.26,
+        0.38,
+        0.26
+      ],
+      "rotation": [
+        0.0,
+        0.3429,
+        0.0,
+        0.9394
+      ]
+    },
+    {
+      "name": "col_box_barrel_2_0",
+      "shape": "box",
+      "center": [
+        -1.6,
+        -1.22,
+        -10.85
+      ],
+      "halfExtents": [
+        0.26,
+        0.38,
+        0.26
+      ],
+      "rotation": [
+        0.0,
+        0.6442,
+        0.0,
+        0.7648
+      ]
+    },
+    {
+      "name": "col_box_basin_0",
+      "shape": "box",
+      "center": [
+        2.95,
+        0.43,
+        -4.69
+      ],
+      "halfExtents": [
+        0.28,
+        0.43,
+        0.21
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_bath_0",
+      "shape": "box",
+      "center": [
+        4.48,
+        0.31,
+        -3.0
+      ],
+      "halfExtents": [
+        0.825,
+        0.31,
+        0.39
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_bath_plant_0",
+      "shape": "box",
+      "center": [
+        2.4,
+        0.4,
+        -2.4
+      ],
+      "halfExtents": [
+        0.2,
+        0.4,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_bird_bath_0",
+      "shape": "box",
+      "center": [
+        -7.6,
+        0.43,
+        10.6
+      ],
+      "halfExtents": [
+        0.3,
+        0.43,
+        0.3
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_crates",
+      "shape": "box",
+      "center": [
+        -1.47,
+        -1.3,
+        -9.27
+      ],
+      "halfExtents": [
+        0.225,
+        0.3,
+        0.55
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_floor",
+      "shape": "box",
+      "center": [
+        -3.5,
+        -1.7,
+        -10.0
+      ],
+      "halfExtents": [
+        2.5,
+        0.1,
+        2.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_stairs_0",
+      "shape": "box",
+      "center": [
+        -3.0,
+        -0.9324,
+        -6.5961
+      ],
+      "halfExtents": [
+        0.9,
+        0.15,
+        1.7
+      ],
+      "rotation": [
+        0.0,
+        0.9701,
+        -0.2425,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_wall_e_0",
+      "shape": "box",
+      "center": [
+        -1.0,
+        -0.35,
+        -10.0
+      ],
+      "halfExtents": [
+        0.1,
+        1.25,
+        2.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_wall_n_0",
+      "shape": "box",
+      "center": [
+        -3.5,
+        -0.35,
+        -12.0
+      ],
+      "halfExtents": [
+        2.4,
+        1.25,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_wall_s_a_0",
+      "shape": "box",
+      "center": [
+        -5.0,
+        -0.35,
+        -8.0
+      ],
+      "halfExtents": [
+        0.9,
+        1.25,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_wall_s_b_0",
+      "shape": "box",
+      "center": [
+        -1.5,
+        -0.35,
+        -8.0
+      ],
+      "halfExtents": [
+        0.4,
+        1.25,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_wall_w_0",
+      "shape": "box",
+      "center": [
+        -6.0,
+        -0.35,
+        -10.0
+      ],
+      "halfExtents": [
+        0.1,
+        1.25,
+        2.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_cellar_wine_rack_0",
+      "shape": "box",
+      "center": [
+        -4.0,
+        -0.725,
+        -11.73
+      ],
+      "halfExtents": [
+        0.76,
+        0.875,
+        0.17
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_chair_0_0",
+      "shape": "box",
+      "center": [
+        -6.1,
+        0.475,
+        2.9
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chair_1_0",
+      "shape": "box",
+      "center": [
+        -5.0,
+        0.475,
+        2.9
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chair_2_0",
+      "shape": "box",
+      "center": [
+        -3.9,
+        0.475,
+        2.9
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chair_3_0",
+      "shape": "box",
+      "center": [
+        -2.9,
+        0.475,
+        2.0
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_chair_4_0",
+      "shape": "box",
+      "center": [
+        -3.9,
+        0.475,
+        1.1
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_chair_5_0",
+      "shape": "box",
+      "center": [
+        -5.0,
+        0.475,
+        1.1
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_chair_6_0",
+      "shape": "box",
+      "center": [
+        -6.1,
+        0.475,
+        1.1
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_chair_7_0",
+      "shape": "box",
+      "center": [
+        -7.1,
+        0.475,
+        2.0
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        -0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_chest_freezer_0",
+      "shape": "box",
+      "center": [
+        8.5,
+        0.43,
+        -3.2
+      ],
+      "halfExtents": [
+        0.635,
+        0.43,
+        0.37
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_chimney_breast_0",
+      "shape": "box",
+      "center": [
+        -8.68,
+        1.4,
+        2.675
+      ],
+      "halfExtents": [
+        0.22,
+        1.4,
+        0.275
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chimney_breast_1",
+      "shape": "box",
+      "center": [
+        -8.68,
+        1.775,
+        2.0
+      ],
+      "halfExtents": [
+        0.22,
+        1.025,
+        0.4
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chimney_breast_2",
+      "shape": "box",
+      "center": [
+        -8.68,
+        1.4,
+        1.325
+      ],
+      "halfExtents": [
+        0.22,
+        1.4,
+        0.275
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chimney_hearth",
+      "shape": "box",
+      "center": [
+        -8.27,
+        0.3,
+        2.0
+      ],
+      "halfExtents": [
+        0.19,
+        0.3,
+        0.65
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_coat_stand_0",
+      "shape": "box",
+      "center": [
+        1.6,
+        0.9,
+        4.45
+      ],
+      "halfExtents": [
+        0.18,
+        0.9,
+        0.18
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_counter_a_0",
+      "shape": "box",
+      "center": [
+        -7.32,
+        0.46,
+        -4.59
+      ],
+      "halfExtents": [
+        0.85,
+        0.46,
+        0.31
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_counter_b_0",
+      "shape": "box",
+      "center": [
+        -5.49,
+        0.46,
+        -4.59
+      ],
+      "halfExtents": [
+        0.25,
+        0.46,
+        0.31
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_counter_c_0",
+      "shape": "box",
+      "center": [
+        -4.07,
+        0.46,
+        -4.59
+      ],
+      "halfExtents": [
+        0.46,
+        0.46,
+        0.31
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_covered_car_0",
+      "shape": "box",
+      "center": [
+        5.3,
+        0.7,
+        1.3
+      ],
+      "halfExtents": [
+        0.99,
+        0.7,
+        2.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_dining_plant_se_0",
+      "shape": "box",
+      "center": [
+        -1.5,
+        0.475,
+        4.5
+      ],
+      "halfExtents": [
+        0.2,
+        0.475,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_dining_plant_sw_0",
+      "shape": "box",
+      "center": [
+        -8.45,
+        0.675,
+        4.45
+      ],
+      "halfExtents": [
+        0.2,
+        0.675,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_dining_window_0",
+      "shape": "box",
+      "center": [
+        -5.0,
+        1.55,
+        5.0
+      ],
+      "halfExtents": [
+        0.9,
+        0.65,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_dog_bed_0",
+      "shape": "box",
+      "center": [
+        7.4,
+        0.1,
+        3.6
+      ],
+      "halfExtents": [
+        0.45,
+        0.1,
+        0.35
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_doorleaf_bathroom",
+      "shape": "box",
+      "center": [
+        2.0,
+        1.039,
+        -3.5
+      ],
+      "halfExtents": [
+        0.467,
+        1.029,
+        0.0325
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_doorleaf_cellar",
+      "shape": "box",
+      "center": [
+        -3.0,
+        1.039,
+        -5.0
+      ],
+      "halfExtents": [
+        0.467,
+        1.029,
+        0.0325
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_doorleaf_front",
+      "shape": "box",
+      "center": [
+        0.5,
+        1.039,
+        5.0
+      ],
+      "halfExtents": [
+        0.467,
+        1.029,
+        0.0325
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_doorleaf_garage",
+      "shape": "box",
+      "center": [
+        2.0,
+        1.039,
+        1.5
+      ],
+      "halfExtents": [
+        0.467,
+        1.029,
+        0.0325
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_doorleaf_kitchen_dining",
+      "shape": "box",
+      "center": [
+        -2.5,
+        1.039,
+        -1.0
+      ],
+      "halfExtents": [
+        0.467,
+        1.029,
+        0.0325
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_doorleaf_kitchen_hall",
+      "shape": "box",
+      "center": [
+        -1.0,
+        1.039,
+        -3.0
+      ],
+      "halfExtents": [
+        0.467,
+        1.029,
+        0.0325
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_fence_e",
+      "shape": "box",
+      "center": [
+        13.1,
+        1.5,
+        10.5
+      ],
+      "halfExtents": [
+        0.1,
+        1.5,
+        5.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_fence_s",
+      "shape": "box",
+      "center": [
+        0.0,
+        1.5,
+        16.1
+      ],
+      "halfExtents": [
+        13.0,
+        1.5,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_fence_w",
+      "shape": "box",
+      "center": [
+        -13.1,
+        1.5,
+        10.5
+      ],
+      "halfExtents": [
+        0.1,
+        1.5,
+        5.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_fridge_0",
+      "shape": "box",
+      "center": [
+        -8.53,
+        0.9,
+        -4.55
+      ],
+      "halfExtents": [
+        0.35,
+        0.9,
+        0.35
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_fuse_box_0",
+      "shape": "box",
+      "center": [
+        2.175,
+        1.52,
+        -0.4
+      ],
+      "halfExtents": [
+        0.27,
+        0.31,
+        0.075
+      ],
+      "rotation": [
+        0.0,
+        -0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_garage_door",
+      "shape": "box",
+      "center": [
+        5.5,
+        1.15,
+        5.0
+      ],
+      "halfExtents": [
+        1.4,
+        1.15,
+        0.05
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_garage_shelving_0",
+      "shape": "box",
+      "center": [
+        6.9,
+        0.95,
+        -4.65
+      ],
+      "halfExtents": [
+        1.45,
+        0.95,
+        0.24
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_garage_window_0",
+      "shape": "box",
+      "center": [
+        9.0,
+        1.6,
+        2.5
+      ],
+      "halfExtents": [
+        0.5,
+        0.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_garden_tree_0",
+      "shape": "box",
+      "center": [
+        -10.6,
+        1.0,
+        9.4
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_garden_tree_1",
+      "shape": "box",
+      "center": [
+        -11.6,
+        1.0,
+        14.2
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_garden_tree_2",
+      "shape": "box",
+      "center": [
+        -0.8,
+        1.0,
+        13.8
+      ],
+      "halfExtents": [
+        0.175,
+        1.0,
+        0.175
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_grandfather_clock_0",
+      "shape": "box",
+      "center": [
+        -0.73,
+        1.1,
+        -1.3
+      ],
+      "halfExtents": [
+        0.26,
+        1.1,
+        0.16
+      ],
+      "rotation": [
+        0.0,
+        -0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_ground",
+      "shape": "box",
+      "center": [
+        0.0,
+        -0.1,
+        5.5
+      ],
+      "halfExtents": [
+        13.2,
+        0.1,
+        10.7
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_hall_table_0_0",
+      "shape": "box",
+      "center": [
+        1.6,
+        0.378,
+        3.0
+      ],
+      "halfExtents": [
+        0.2295,
+        0.378,
+        0.2295
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_hall_table_1_0",
+      "shape": "box",
+      "center": [
+        1.6,
+        0.378,
+        -0.8
+      ],
+      "halfExtents": [
+        0.2295,
+        0.378,
+        0.2295
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_hedge_e",
+      "shape": "box",
+      "center": [
+        11.05,
+        1.5,
+        5.1
+      ],
+      "halfExtents": [
+        1.95,
+        1.5,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_hedge_w",
+      "shape": "box",
+      "center": [
+        -11.05,
+        1.5,
+        5.1
+      ],
+      "halfExtents": [
+        1.95,
+        1.5,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_island_0",
+      "shape": "box",
+      "center": [
+        -6.0,
+        0.46,
+        -2.6
+      ],
+      "halfExtents": [
+        1.25,
+        0.46,
+        0.4
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_kitchen_window_0",
+      "shape": "box",
+      "center": [
+        -1.5,
+        1.7,
+        -5.0
+      ],
+      "halfExtents": [
+        0.3,
+        0.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_oven_tower_0",
+      "shape": "box",
+      "center": [
+        -4.89,
+        1.075,
+        -4.59
+      ],
+      "halfExtents": [
+        0.37,
+        1.075,
+        0.31
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_oven_tower_1",
+      "shape": "box",
+      "center": [
+        -4.89,
+        0.93,
+        -4.085
+      ],
+      "halfExtents": [
+        0.3,
+        0.03,
+        0.215
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_pantry_0",
+      "shape": "box",
+      "center": [
+        -8.38,
+        0.975,
+        -1.395
+      ],
+      "halfExtents": [
+        0.515,
+        0.975,
+        0.28
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_porch_plant_l_0",
+      "shape": "box",
+      "center": [
+        -0.4,
+        0.425,
+        5.45
+      ],
+      "halfExtents": [
+        0.2,
+        0.425,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_porch_plant_r_0",
+      "shape": "box",
+      "center": [
+        1.4,
+        0.425,
+        5.45
+      ],
+      "halfExtents": [
+        0.2,
+        0.425,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_preserve_shelves_0",
+      "shape": "box",
+      "center": [
+        -5.72,
+        -0.7,
+        -10.0
+      ],
+      "halfExtents": [
+        1.05,
+        0.9,
+        0.18
+      ],
+      "rotation": [
+        0.0,
+        -0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_record_player_0",
+      "shape": "box",
+      "center": [
+        -8.66,
+        0.42,
+        -0.45
+      ],
+      "halfExtents": [
+        0.32,
+        0.42,
+        0.22
+      ],
+      "rotation": [
+        0.0,
+        -0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_record_table_0",
+      "shape": "box",
+      "center": [
+        -8.6,
+        0.31,
+        0.42
+      ],
+      "halfExtents": [
+        0.2125,
+        0.31,
+        0.2125
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_sideboard_0",
+      "shape": "box",
+      "center": [
+        -1.355,
+        0.45,
+        -0.25
+      ],
+      "halfExtents": [
+        0.63,
+        0.45,
+        0.25
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_sink_0",
+      "shape": "box",
+      "center": [
+        -1.75,
+        0.46,
+        -4.57
+      ],
+      "halfExtents": [
+        0.65,
+        0.46,
+        0.33
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_stair_header_0",
+      "shape": "box",
+      "center": [
+        -3.0,
+        1.85,
+        -8.1
+      ],
+      "halfExtents": [
+        0.9,
+        0.95,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_stair_wall_e_0",
+      "shape": "box",
+      "center": [
+        -2.0,
+        0.6,
+        -6.6
+      ],
+      "halfExtents": [
+        0.1,
+        2.2,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_stair_wall_w_0",
+      "shape": "box",
+      "center": [
+        -4.0,
+        0.6,
+        -6.6
+      ],
+      "halfExtents": [
+        0.1,
+        2.2,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_stove_0",
+      "shape": "box",
+      "center": [
+        -6.1,
+        0.46,
+        -4.59
+      ],
+      "halfExtents": [
+        0.35,
+        0.46,
+        0.31
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_table",
+      "shape": "box",
+      "center": [
+        -5.0,
+        0.381,
+        2.0
+      ],
+      "halfExtents": [
+        1.75,
+        0.381,
+        0.6
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_toilet_0",
+      "shape": "box",
+      "center": [
+        4.25,
+        0.22,
+        -4.61
+      ],
+      "halfExtents": [
+        0.21,
+        0.22,
+        0.29
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_tyres",
+      "shape": "box",
+      "center": [
+        8.4,
+        0.3,
+        4.4
+      ],
+      "halfExtents": [
+        0.375,
+        0.3,
+        0.375
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_umbrella_stand_0",
+      "shape": "box",
+      "center": [
+        1.25,
+        0.4,
+        4.68
+      ],
+      "halfExtents": [
+        0.13,
+        0.4,
+        0.13
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_van_0",
+      "shape": "box",
+      "center": [
+        5.5,
+        1.15,
+        12.0
+      ],
+      "halfExtents": [
+        1.0,
+        1.15,
+        0.9
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_1",
+      "shape": "box",
+      "center": [
+        5.5,
+        0.3,
+        9.6
+      ],
+      "halfExtents": [
+        1.0,
+        0.3,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_2",
+      "shape": "box",
+      "center": [
+        6.41,
+        1.45,
+        9.6
+      ],
+      "halfExtents": [
+        0.09,
+        0.85,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_3",
+      "shape": "box",
+      "center": [
+        4.59,
+        1.45,
+        9.6
+      ],
+      "halfExtents": [
+        0.09,
+        0.85,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_4",
+      "shape": "box",
+      "center": [
+        5.5,
+        2.21,
+        9.6
+      ],
+      "halfExtents": [
+        0.82,
+        0.09,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_5",
+      "shape": "box",
+      "center": [
+        6.4424,
+        1.36,
+        7.6691
+      ],
+      "halfExtents": [
+        0.415,
+        0.8,
+        0.04
+      ],
+      "rotation": [
+        0.0,
+        0.6088,
+        0.0,
+        0.7934
+      ]
+    },
+    {
+      "name": "col_box_van_6",
+      "shape": "box",
+      "center": [
+        4.5576,
+        1.36,
+        7.6691
+      ],
+      "halfExtents": [
+        0.415,
+        0.8,
+        0.04
+      ],
+      "rotation": [
+        0.0,
+        -0.6088,
+        0.0,
+        0.7934
+      ]
+    },
+    {
+      "name": "col_box_van_7",
+      "shape": "box",
+      "center": [
+        6.0,
+        0.88,
+        8.6
+      ],
+      "halfExtents": [
+        0.25,
+        0.28,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_8",
+      "shape": "box",
+      "center": [
+        5.05,
+        0.74,
+        8.75
+      ],
+      "halfExtents": [
+        0.25,
+        0.14,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_van_9",
+      "shape": "box",
+      "center": [
+        5.2,
+        0.88,
+        9.8
+      ],
+      "halfExtents": [
+        0.25,
+        0.28,
+        0.2
+      ],
+      "rotation": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_wall_bath_garage_e_0",
+      "shape": "box",
+      "center": [
+        5.0,
+        1.4,
+        -3.5
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        1.4
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_bath_garage_s_0",
+      "shape": "box",
+      "center": [
+        3.6,
+        1.4,
+        -2.0
+      ],
+      "halfExtents": [
+        1.5,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_dining_hall_0",
+      "shape": "box",
+      "center": [
+        -1.0,
+        1.4,
+        3.95
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.95
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_dining_hall_1",
+      "shape": "box",
+      "center": [
+        -1.0,
+        2.6,
+        2.0
+      ],
+      "halfExtents": [
+        0.1,
+        0.2,
+        1.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_dining_hall_2",
+      "shape": "box",
+      "center": [
+        -1.0,
+        1.4,
+        0.0
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        1.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_dining_kitchen_0",
+      "shape": "box",
+      "center": [
+        -5.95,
+        1.4,
+        -1.0
+      ],
+      "halfExtents": [
+        2.95,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_dining_kitchen_1",
+      "shape": "box",
+      "center": [
+        -2.5,
+        2.45,
+        -1.0
+      ],
+      "halfExtents": [
+        0.5,
+        0.35,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_dining_kitchen_2",
+      "shape": "box",
+      "center": [
+        -1.55,
+        1.4,
+        -1.0
+      ],
+      "halfExtents": [
+        0.45,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_0",
+      "shape": "box",
+      "center": [
+        9.0,
+        1.4,
+        3.95
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.95
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_1",
+      "shape": "box",
+      "center": [
+        9.0,
+        0.6,
+        2.5
+      ],
+      "halfExtents": [
+        0.1,
+        0.6,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_2",
+      "shape": "box",
+      "center": [
+        9.0,
+        2.4,
+        2.5
+      ],
+      "halfExtents": [
+        0.1,
+        0.4,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_3",
+      "shape": "box",
+      "center": [
+        9.0,
+        1.4,
+        -1.45
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        3.45
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_hall_bath_0",
+      "shape": "box",
+      "center": [
+        2.0,
+        1.4,
+        -2.5
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_hall_bath_1",
+      "shape": "box",
+      "center": [
+        2.0,
+        2.45,
+        -3.5
+      ],
+      "halfExtents": [
+        0.1,
+        0.35,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_hall_bath_2",
+      "shape": "box",
+      "center": [
+        2.0,
+        1.4,
+        -4.45
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.45
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_hall_garage_0",
+      "shape": "box",
+      "center": [
+        2.0,
+        1.4,
+        3.45
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        1.45
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_hall_garage_1",
+      "shape": "box",
+      "center": [
+        2.0,
+        2.45,
+        1.5
+      ],
+      "halfExtents": [
+        0.1,
+        0.35,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_hall_garage_2",
+      "shape": "box",
+      "center": [
+        2.0,
+        1.4,
+        -0.5
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        1.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_kitchen_hall_0",
+      "shape": "box",
+      "center": [
+        -1.0,
+        1.4,
+        -1.75
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.75
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_kitchen_hall_1",
+      "shape": "box",
+      "center": [
+        -1.0,
+        2.45,
+        -3.0
+      ],
+      "halfExtents": [
+        0.1,
+        0.35,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_kitchen_hall_2",
+      "shape": "box",
+      "center": [
+        -1.0,
+        1.4,
+        -4.2
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.7
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_bath_0",
+      "shape": "box",
+      "center": [
+        3.5,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        1.5,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_garage_0",
+      "shape": "box",
+      "center": [
+        7.05,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        2.05,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_hall_0",
+      "shape": "box",
+      "center": [
+        0.5,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        1.5,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_a_0",
+      "shape": "box",
+      "center": [
+        -6.6,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        2.5,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_b_0",
+      "shape": "box",
+      "center": [
+        -3.8,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        0.3,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_b_1",
+      "shape": "box",
+      "center": [
+        -3.0,
+        2.45,
+        -5.0
+      ],
+      "halfExtents": [
+        0.5,
+        0.35,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_b_2",
+      "shape": "box",
+      "center": [
+        -2.2,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        0.3,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_c_0",
+      "shape": "box",
+      "center": [
+        -1.85,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        0.05,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_c_1",
+      "shape": "box",
+      "center": [
+        -1.5,
+        0.65,
+        -5.0
+      ],
+      "halfExtents": [
+        0.3,
+        0.65,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_c_2",
+      "shape": "box",
+      "center": [
+        -1.5,
+        2.45,
+        -5.0
+      ],
+      "halfExtents": [
+        0.3,
+        0.35,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_kitchen_c_3",
+      "shape": "box",
+      "center": [
+        -1.1,
+        1.4,
+        -5.0
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_dining_0",
+      "shape": "box",
+      "center": [
+        -7.5,
+        1.4,
+        5.0
+      ],
+      "halfExtents": [
+        1.6,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_dining_1",
+      "shape": "box",
+      "center": [
+        -5.0,
+        0.45,
+        5.0
+      ],
+      "halfExtents": [
+        0.9,
+        0.45,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_dining_2",
+      "shape": "box",
+      "center": [
+        -5.0,
+        2.5,
+        5.0
+      ],
+      "halfExtents": [
+        0.9,
+        0.3,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_dining_3",
+      "shape": "box",
+      "center": [
+        -2.55,
+        1.4,
+        5.0
+      ],
+      "halfExtents": [
+        1.55,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_garage_0",
+      "shape": "box",
+      "center": [
+        3.05,
+        1.4,
+        5.0
+      ],
+      "halfExtents": [
+        1.05,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_garage_1",
+      "shape": "box",
+      "center": [
+        5.5,
+        2.55,
+        5.0
+      ],
+      "halfExtents": [
+        1.4,
+        0.25,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_garage_2",
+      "shape": "box",
+      "center": [
+        8.0,
+        1.4,
+        5.0
+      ],
+      "halfExtents": [
+        1.1,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_hall_0",
+      "shape": "box",
+      "center": [
+        -0.5,
+        1.4,
+        5.0
+      ],
+      "halfExtents": [
+        0.5,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_hall_1",
+      "shape": "box",
+      "center": [
+        0.5,
+        2.45,
+        5.0
+      ],
+      "halfExtents": [
+        0.5,
+        0.35,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s_hall_2",
+      "shape": "box",
+      "center": [
+        1.5,
+        1.4,
+        5.0
+      ],
+      "halfExtents": [
+        0.5,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_w_dining_0",
+      "shape": "box",
+      "center": [
+        -9.0,
+        1.4,
+        1.95
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        2.95
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_w_kitchen_0",
+      "shape": "box",
+      "center": [
+        -9.0,
+        1.4,
+        -2.95
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        1.95
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_workbench_0",
+      "shape": "box",
+      "center": [
+        8.54,
+        0.45,
+        0.0
+      ],
+      "halfExtents": [
+        0.8,
+        0.45,
+        0.35
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    }
+  ],
+  "seats": [
+    {
+      "id": "0",
+      "position": [
+        -6.1,
+        0.45,
+        2.9
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "1",
+      "position": [
+        -5.0,
+        0.45,
+        2.9
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "2",
+      "position": [
+        -3.9,
+        0.45,
+        2.9
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "3",
+      "position": [
+        -2.9,
+        0.45,
+        2.0
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "4",
+      "position": [
+        -3.9,
+        0.45,
+        1.1
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "5",
+      "position": [
+        -5.0,
+        0.45,
+        1.1
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "6",
+      "position": [
+        -6.1,
+        0.45,
+        1.1
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "7",
+      "position": [
+        -7.1,
+        0.45,
+        2.0
+      ],
+      "yaw": -1.5708
+    }
+  ],
+  "rooms": [
+    {
+      "id": "bathroom",
+      "center": [
+        3.5,
+        1.4,
+        -3.5
+      ],
+      "halfExtents": [
+        1.5,
+        1.4,
+        1.5
+      ]
+    },
+    {
+      "id": "cellar",
+      "center": [
+        -3.5,
+        -0.35,
+        -10.0
+      ],
+      "halfExtents": [
+        2.5,
+        1.25,
+        2.0
+      ]
+    },
+    {
+      "id": "cellar",
+      "center": [
+        -3.0,
+        0.6,
+        -6.5
+      ],
+      "halfExtents": [
+        1.0,
+        2.2,
+        1.5
+      ]
+    },
+    {
+      "id": "dining",
+      "center": [
+        -5.0,
+        1.4,
+        2.0
+      ],
+      "halfExtents": [
+        4.0,
+        1.4,
+        3.0
+      ]
+    },
+    {
+      "id": "garage",
+      "center": [
+        5.5,
+        1.4,
+        1.5
+      ],
+      "halfExtents": [
+        3.5,
+        1.4,
+        3.5
+      ]
+    },
+    {
+      "id": "garage",
+      "center": [
+        7.0,
+        1.4,
+        -3.5
+      ],
+      "halfExtents": [
+        2.0,
+        1.4,
+        1.5
+      ]
+    },
+    {
+      "id": "hall",
+      "center": [
+        0.5,
+        1.4,
+        0.0
+      ],
+      "halfExtents": [
+        1.5,
+        1.4,
+        5.0
+      ]
+    },
+    {
+      "id": "kitchen",
+      "center": [
+        -5.0,
+        1.4,
+        -3.0
+      ],
+      "halfExtents": [
+        4.0,
+        1.4,
+        2.0
+      ]
+    },
+    {
+      "id": "outside",
+      "center": [
+        0.0,
+        2.0,
+        10.5
+      ],
+      "halfExtents": [
+        13.0,
+        2.0,
+        5.5
+      ]
+    }
+  ],
+  "doors": [
+    {
+      "id": "bathroom",
+      "a": "hall",
+      "b": "bathroom",
+      "position": [
+        2.0,
+        0.0,
+        -3.5
+      ],
+      "leaf": true,
+      "open": false
+    },
+    {
+      "id": "cellar",
+      "a": "kitchen",
+      "b": "cellar",
+      "position": [
+        -3.0,
+        0.0,
+        -5.0
+      ],
+      "leaf": true,
+      "open": false
+    },
+    {
+      "id": "dining_hall",
+      "a": "dining",
+      "b": "hall",
+      "position": [
+        -1.0,
+        0.0,
+        2.0
+      ],
+      "leaf": false,
+      "open": true
+    },
+    {
+      "id": "front",
+      "a": "hall",
+      "b": "outside",
+      "position": [
+        0.5,
+        0.0,
+        5.0
+      ],
+      "leaf": true,
+      "open": false
+    },
+    {
+      "id": "garage",
+      "a": "hall",
+      "b": "garage",
+      "position": [
+        2.0,
+        0.0,
+        1.5
+      ],
+      "leaf": true,
+      "open": false
+    },
+    {
+      "id": "kitchen_dining",
+      "a": "kitchen",
+      "b": "dining",
+      "position": [
+        -2.5,
+        0.0,
+        -1.0
+      ],
+      "leaf": true,
+      "open": true
+    },
+    {
+      "id": "kitchen_hall",
+      "a": "kitchen",
+      "b": "hall",
+      "position": [
+        -1.0,
+        0.0,
+        -3.0
+      ],
+      "leaf": true,
+      "open": true
+    }
+  ],
+  "interactables": [
+    {
+      "id": "bathroom",
+      "kind": "door",
+      "position": [
+        2.0,
+        1.0,
+        -3.5
+      ]
+    },
+    {
+      "id": "cellar",
+      "kind": "door",
+      "position": [
+        -3.0,
+        1.0,
+        -5.0
+      ]
+    },
+    {
+      "id": "chalkboard",
+      "kind": "chalkboard",
+      "position": [
+        -8.75,
+        1.6,
+        -3.0
+      ]
+    },
+    {
+      "id": "chop",
+      "kind": "chop",
+      "position": [
+        -7.4,
+        1.07,
+        -4.55
+      ]
+    },
+    {
+      "id": "curtain",
+      "kind": "curtain",
+      "position": [
+        -5.0,
+        1.5,
+        4.7
+      ]
+    },
+    {
+      "id": "fridge",
+      "kind": "fridge",
+      "position": [
+        -8.53,
+        1.5,
+        -4.12
+      ]
+    },
+    {
+      "id": "front",
+      "kind": "door",
+      "position": [
+        0.5,
+        1.0,
+        5.0
+      ]
+    },
+    {
+      "id": "fuse_box",
+      "kind": "fuse_box",
+      "position": [
+        2.33,
+        1.52,
+        -0.4
+      ]
+    },
+    {
+      "id": "garage",
+      "kind": "door",
+      "position": [
+        2.0,
+        1.0,
+        1.5
+      ]
+    },
+    {
+      "id": "hob_0",
+      "kind": "hob",
+      "position": [
+        -6.27,
+        1.07,
+        -4.62
+      ]
+    },
+    {
+      "id": "hob_1",
+      "kind": "hob",
+      "position": [
+        -5.93,
+        1.07,
+        -4.62
+      ]
+    },
+    {
+      "id": "kitchen_dining",
+      "kind": "door",
+      "position": [
+        -2.5,
+        1.0,
+        -1.0
+      ]
+    },
+    {
+      "id": "kitchen_hall",
+      "kind": "door",
+      "position": [
+        -1.0,
+        1.0,
+        -3.0
+      ]
+    },
+    {
+      "id": "lights",
+      "kind": "lights",
+      "position": [
+        -1.2,
+        1.25,
+        0.5
+      ]
+    },
+    {
+      "id": "mirror",
+      "kind": "mirror",
+      "position": [
+        -8.3,
+        1.66,
+        2.0
+      ]
+    },
+    {
+      "id": "oven",
+      "kind": "oven",
+      "position": [
+        -4.89,
+        1.2,
+        -4.25
+      ]
+    },
+    {
+      "id": "pass",
+      "kind": "pass",
+      "position": [
+        -5.9,
+        1.04,
+        -2.6
+      ]
+    },
+    {
+      "id": "plates",
+      "kind": "plates",
+      "position": [
+        -6.85,
+        1.07,
+        -2.6
+      ]
+    },
+    {
+      "id": "record_player",
+      "kind": "record_player",
+      "position": [
+        -8.45,
+        1.0,
+        -0.45
+      ]
+    },
+    {
+      "id": "van",
+      "kind": "van",
+      "position": [
+        5.5,
+        1.1,
+        8.0
+      ]
+    },
+    {
+      "id": "whiteboard",
+      "kind": "whiteboard",
+      "position": [
+        -8.56,
+        0.9,
+        -4.1
+      ]
+    },
+    {
+      "id": "wine_rack",
+      "kind": "wine_rack",
+      "position": [
+        -4.0,
+        -0.6,
+        -11.3
+      ]
+    }
+  ],
+  "spawns": [
+    {
+      "id": "0",
+      "position": [
+        4.2,
+        0.0,
+        7.2
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "1",
+      "position": [
+        5.5,
+        0.0,
+        7.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "2",
+      "position": [
+        6.8,
+        0.0,
+        7.2
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "3",
+      "position": [
+        4.6,
+        0.0,
+        6.2
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "4",
+      "position": [
+        5.5,
+        0.0,
+        6.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "5",
+      "position": [
+        6.4,
+        0.0,
+        6.2
+      ],
+      "yaw": 0.0
+    }
+  ],
+  "sockets": [
+    {
+      "id": "dog",
+      "position": [
+        7.4,
+        0.0,
+        3.6
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "guest_door",
+      "position": [
+        0.5,
+        0.0,
+        5.9
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "lamp_light",
+      "position": [
+        -5.0,
+        1.9,
+        2.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "neighbor",
+      "position": [
+        0.2,
+        0.0,
+        2.3
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "path_0",
+      "position": [
+        0.5,
+        0.0,
+        4.2
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "path_1",
+      "position": [
+        0.4,
+        0.0,
+        2.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "path_2",
+      "position": [
+        -1.8,
+        0.0,
+        2.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "path_n",
+      "position": [
+        -2.3,
+        0.0,
+        -0.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "path_s",
+      "position": [
+        -2.3,
+        0.0,
+        4.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "plate_0",
+      "position": [
+        -6.1,
+        0.762,
+        2.28
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "plate_1",
+      "position": [
+        -5.0,
+        0.762,
+        2.28
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "plate_2",
+      "position": [
+        -3.9,
+        0.762,
+        2.28
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "plate_3",
+      "position": [
+        -3.52,
+        0.767,
+        2.0
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "plate_4",
+      "position": [
+        -3.9,
+        0.762,
+        1.72
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "plate_5",
+      "position": [
+        -5.0,
+        0.762,
+        1.72
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "plate_6",
+      "position": [
+        -6.1,
+        0.762,
+        1.72
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "plate_7",
+      "position": [
+        -6.48,
+        0.767,
+        2.0
+      ],
+      "yaw": -1.5708
+    },
+    {
+      "id": "prop_candelabra",
+      "position": [
+        -5.0,
+        0.767,
+        2.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "prop_painting",
+      "position": [
+        -6.0,
+        1.35,
+        -0.87
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "prop_pan",
+      "position": [
+        -5.1,
+        0.92,
+        -2.6
+      ],
+      "yaw": 0.4
+    },
+    {
+      "id": "prop_photo_frame",
+      "position": [
+        1.6,
+        0.76,
+        -0.8
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "prop_pot",
+      "position": [
+        -3.95,
+        0.92,
+        -4.59
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "prop_record",
+      "position": [
+        -8.6,
+        0.62,
+        0.42
+      ],
+      "yaw": -1.5708
+    },
+    {
+      "id": "prop_snow_globe",
+      "position": [
+        1.6,
+        0.76,
+        3.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "prop_tea_towel",
+      "position": [
+        -5.2,
+        0.92,
+        -2.35
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "room_light_bathroom",
+      "position": [
+        3.5,
+        2.5,
+        -3.5
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "room_light_cellar",
+      "position": [
+        -3.5,
+        0.7,
+        -10.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "room_light_garage",
+      "position": [
+        5.5,
+        2.5,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "room_light_hall",
+      "position": [
+        0.5,
+        2.5,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "room_light_kitchen",
+      "position": [
+        -5.0,
+        2.5,
+        -3.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "room_light_porch",
+      "position": [
+        0.5,
+        2.4,
+        5.6
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "stand_0",
+      "position": [
+        -7.4,
+        0.0,
+        4.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "stand_1",
+      "position": [
+        -6.2,
+        0.0,
+        4.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "stand_2",
+      "position": [
+        -3.8,
+        0.0,
+        4.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "stand_3",
+      "position": [
+        -2.6,
+        0.0,
+        4.25
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "stand_4",
+      "position": [
+        -7.4,
+        0.0,
+        -0.25
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "stand_5",
+      "position": [
+        -6.2,
+        0.0,
+        -0.25
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "stand_6",
+      "position": [
+        -3.8,
+        0.0,
+        -0.25
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "stand_7",
+      "position": [
+        -2.6,
+        0.0,
+        -0.25
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "station_chop",
+      "position": [
+        -7.4,
+        0.955,
+        -4.55
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "station_hob_0",
+      "position": [
+        -6.27,
+        0.952,
+        -4.62
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "station_hob_1",
+      "position": [
+        -5.93,
+        0.952,
+        -4.62
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "station_oven",
+      "position": [
+        -4.89,
+        1.0,
+        -4.51
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "station_pass",
+      "position": [
+        -5.9,
+        0.932,
+        -2.6
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "van_rear",
+      "position": [
+        5.5,
+        0.0,
+        7.5
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "visitor_door",
+      "position": [
+        0.9,
+        0.0,
+        5.9
+      ],
+      "yaw": 0.0
+    }
+  ]
+}

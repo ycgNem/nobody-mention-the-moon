@@ -6,9 +6,11 @@ With no asset names it builds everything under blender/assets/. Each asset scrip
 
     KIND = "prop" | "character" | "house"
     def build() -> None: ...   # create objects in the empty scene
+    BAKE = "ao"                 # optional: bake ambient occlusion (lib/bake.py)
 
 Output per asset: client/public/models/<name>.glb, plus <name>.layout.json when the asset has
-gameplay empties (colliders, seats, rooms, doors, interactables, spawns).
+gameplay empties (colliders, seats, rooms, doors, interactables, spawns), plus <name>_ao.webp
+when it bakes AO. tools/art.ts then meshopt-compresses the glb.
 """
 
 from __future__ import annotations
@@ -28,7 +30,7 @@ PALETTE_TS = ROOT / "shared" / "src" / "content" / "palette.ts"
 
 sys.path.insert(0, str(BLENDER_DIR))
 
-from lib import layout, palette, validate  # noqa: E402
+from lib import bake, layout, palette, validate  # noqa: E402
 
 
 def discover() -> dict[str, Path]:
@@ -65,6 +67,10 @@ def export_glb(path: Path) -> None:
         export_cameras=False,
         export_lights=False,
         export_animations=True,
+        # Skinned clips: only export the bone channels a clip actually keys (rotations, plus the
+        # hips location). Without this every bone also gets constant scale/translation tracks,
+        # which would stomp the client's per-guest bone scaling. No effect on static assets.
+        export_optimize_animation_keep_anim_armature=False,
     )
 
 
@@ -81,6 +87,23 @@ def build_one(name: str, path: Path) -> bool:
             print(f"    - {p}")
         return False
 
+    baked = ""
+    bake_kind = getattr(module, "BAKE", None)
+    if bake_kind is not None:
+        if bake_kind != "ao":
+            print(f"✗ {name}: unknown BAKE '{bake_kind}', expected 'ao'")
+            return False
+        baked = ", " + bake.bake_ao(
+            name,
+            OUT_DIR,
+            skip=tuple(getattr(module, "BAKE_SKIP", ())),
+            occluders=tuple(getattr(module, "BAKE_OCCLUDERS", ())),
+            density=dict(getattr(module, "BAKE_DENSITY", {})),
+            size=int(getattr(module, "BAKE_SIZE", 2048)),
+            samples=int(getattr(module, "BAKE_SAMPLES", 64)),
+            distance=float(getattr(module, "BAKE_DISTANCE", 1.0)),
+        )
+
     glb = OUT_DIR / f"{name}.glb"
     export_glb(glb)
     data = layout.extract(name)
@@ -91,7 +114,7 @@ def build_one(name: str, path: Path) -> bool:
             f", layout: {len(data['colliders'])} colliders, {len(data['seats'])} seats, "
             f"{len(data['rooms'])} rooms, {len(data['spawns'])} spawns"
         )
-    print(f"✓ {name} ({kind}): {tris} tris → {glb.relative_to(ROOT)}{note}")
+    print(f"✓ {name} ({kind}): {tris} tris → {glb.relative_to(ROOT)}{note}{baked}")
     return True
 
 

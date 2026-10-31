@@ -14,3 +14,9 @@ blender/**/__pycache__/
 Thumbs.db
 .vscode/*
 !.vscode/extensions.json
+
+# Vosk speech model (41 MB, downloaded per docs/spikes/M5-keyword-spotting.md, never committed)
+client/public/speech/
+
+# Browser test artifacts
+.playwright-mcp/

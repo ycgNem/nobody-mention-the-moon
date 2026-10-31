@@ -10,7 +10,21 @@ type Rapier = typeof RAPIER;
 
 /** World with gravity off: players are kinematic and fall via movePlayer(). */
 export function buildStaticWorld(R: Rapier, layout: Layout): World {
-  const world = new R.World({ x: 0, y: 0, z: 0 });
+  return buildHouseWorld(R, layout, 0).world;
+}
+
+/** Character movement ignores loose props (dynamic) and held props (kinematic). */
+export const PLAYER_MOVE_FILTER = 2 | 4 | 8; // EXCLUDE_KINEMATIC | EXCLUDE_DYNAMIC | EXCLUDE_SENSORS
+/** Line of sight: walls, furniture and players block it; loose and held props don't. */
+export const SIGHT_FILTER = 2 | 4 | 8;
+
+/**
+ * The house's static colliders, by name (door leaves are toggled by name when doors open).
+ * `gravity` is for loose props; players are moved kinematically and ignore it.
+ */
+export function buildHouseWorld(R: Rapier, layout: Layout, gravity = -9.81): { world: World; named: Map<string, Collider> } {
+  const world = new R.World({ x: 0, y: gravity, z: 0 });
+  const named = new Map<string, Collider>();
   for (const c of layout.colliders) {
     const [qx, qy, qz, qw] = c.rotation;
     const desc =
@@ -18,9 +32,21 @@ export function buildStaticWorld(R: Rapier, layout: Layout): World {
         ? R.ColliderDesc.cuboid(...c.halfExtents)
         : R.ColliderDesc.capsule(c.halfHeight, c.radius);
     desc.setTranslation(...c.center).setRotation({ x: qx, y: qy, z: qz, w: qw });
-    world.createCollider(desc);
+    named.set(c.name, world.createCollider(desc));
   }
-  return world;
+  return { world, named };
+}
+
+/** Distance from `from` to the first wall/body along the segment to `to`, or null if clear. */
+export function firstHit(R: Rapier, world: World, from: Vec3, to: Vec3, exclude?: Collider): { distance: number; collider: Collider } | null {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const dz = to[2] - from[2];
+  const len = Math.hypot(dx, dy, dz);
+  if (len < 1e-4) return null;
+  const ray = new R.Ray({ x: from[0], y: from[1], z: from[2] }, { x: dx / len, y: dy / len, z: dz / len });
+  const hit = world.castRay(ray, len, true, SIGHT_FILTER, undefined, exclude);
+  return hit ? { distance: hit.timeOfImpact, collider: hit.collider } : null;
 }
 
 export interface PlayerBody {
@@ -71,7 +97,7 @@ export function movePlayer(
     ? -1 // a small push keeps snap-to-ground working on slopes and steps
     : Math.max(body.velocityY - PLAYER.gravity * dt, -PLAYER.maxFallSpeed);
 
-  cc.computeColliderMovement(body.collider, { x: dx, y: body.velocityY * dt, z: dz });
+  cc.computeColliderMovement(body.collider, { x: dx, y: body.velocityY * dt, z: dz }, PLAYER_MOVE_FILTER);
   const m = cc.computedMovement();
   body.grounded = cc.computedGrounded();
   if (body.grounded) body.velocityY = 0;
@@ -79,6 +105,27 @@ export function movePlayer(
   body.position = [body.position[0] + m.x, body.position[1] + m.y, body.position[2] + m.z];
   body.collider.setTranslation({ x: body.position[0], y: body.position[1], z: body.position[2] });
   return body;
+}
+
+/**
+ * Server-side: moves the capsule toward where the client says its feet are, through the
+ * world's colliders. Vertical motion (jumps, falls) is the client's; the server only checks it
+ * doesn't pass through anything. Returns the new feet position.
+ */
+export function movePlayerToward(cc: KinematicCharacterController, body: PlayerBody, feet: Vec3, maxStep: number): Vec3 {
+  let dx = feet[0] - body.position[0];
+  let dz = feet[2] - body.position[2];
+  const dist = Math.hypot(dx, dz);
+  if (dist > maxStep) {
+    dx *= maxStep / dist;
+    dz *= maxStep / dist;
+  }
+  const dy = Math.max(-maxStep * 3, Math.min(maxStep, feet[1] + PLAYER_CENTER_OFFSET - body.position[1]));
+  cc.computeColliderMovement(body.collider, { x: dx, y: dy, z: dz }, PLAYER_MOVE_FILTER);
+  const m = cc.computedMovement();
+  body.position = [body.position[0] + m.x, body.position[1] + m.y, body.position[2] + m.z];
+  body.collider.setTranslation({ x: body.position[0], y: body.position[1], z: body.position[2] });
+  return [body.position[0], body.position[1] - PLAYER_CENTER_OFFSET, body.position[2]];
 }
 
 /** Puts the capsule at an exact position (used for server corrections and spawns). */

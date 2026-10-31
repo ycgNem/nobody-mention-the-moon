@@ -1,54 +1,42 @@
-// One dinner = one room, matched by its 4-letter code.
-// M0: players walk around the greybox; the server re-runs each reported move through Rapier
-// so nobody walks through the table, and broadcasts the corrected positions.
+// One dinner party = one room, matched by its 4-letter code. The server runs the whole game
+// (shared/src/game/DinnerGame.ts): clients send commands, the server simulates, and the
+// schema (a mirror of GameView) plus a stream of events go back out.
 
+import { randomInt } from 'node:crypto';
 import { Room, type Client } from '@colyseus/core';
-import RAPIER, { type KinematicCharacterController, type World } from '@dimforge/rapier3d-compat';
+import RAPIER from '@dimforge/rapier3d-compat';
 import {
   DEFAULT_ROOM_CODE,
+  DinnerGame,
+  FIRST_HOUSE,
+  HOUSE_IDS,
   MSG,
   NET,
-  PALETTE,
-  PLAYER,
-  PLAYER_CENTER_OFFSET,
-  createCharacterController,
-  createPlayerBody,
-  isMoveMessage,
-  movePlayer,
+  isCommand,
   normalizeRoomCode,
-  removePlayerBody,
+  type GameEvent,
   type JoinOptions,
-  type Layout,
-  type MoveMessage,
-  type PlayerBody,
+  type VoiceRelay,
 } from '@moon/shared';
-import { DinnerState, PlayerState } from './schema.ts';
-import { createWorld } from './world.ts';
+import { GameState, syncInto } from './schema.ts';
+import { initRapier, loadLayout } from './world.ts';
 
-const HOUSE = 'greybox';
-const APRONS = [
-  PALETTE.apron_teal,
-  PALETTE.apron_mustard,
-  PALETTE.apron_coral,
-  PALETTE.apron_lilac,
-  PALETTE.apron_sage,
-  PALETTE.apron_navy,
-];
-const MAX_MOVE_DT = 0.25;
+const SEED_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+/** Voice signals are SDP and ICE candidates: a few KB at most. */
+const MAX_SIGNAL_BYTES = 16 * 1024;
 
-interface Host {
-  body: PlayerBody;
-  lastMoveAt: number;
+export function randomSeed(): string {
+  let s = 'MOON-';
+  for (let i = 0; i < 4; i++) s += SEED_CHARS[randomInt(SEED_CHARS.length)];
+  return s;
 }
 
-export class DinnerRoom extends Room<{ state: DinnerState }> {
+export class DinnerRoom extends Room<{ state: GameState }> {
   override maxClients = NET.maxPlayers;
-  override state = new DinnerState();
+  override state = new GameState();
+  override patchRate = 1000 / NET.patchRateHz;
 
-  private world!: World;
-  private cc!: KinematicCharacterController;
-  private layout!: Layout;
-  private hosts = new Map<string, Host>();
+  game: DinnerGame | undefined;
 
   override async onCreate(options: Partial<JoinOptions>) {
     // Matchmaking filters on the raw `code` option, so a non-normalized code ("moon") would
@@ -57,91 +45,80 @@ export class DinnerRoom extends Room<{ state: DinnerState }> {
     if (code !== normalizeRoomCode(code) || code.length !== 4) {
       throw new Error(`invalid room code "${code}"`);
     }
+    await initRapier();
+    const houses = await Promise.all(HOUSE_IDS.map((id) => loadLayout(id)));
+    const layout = houses.find((l) => l.asset === FIRST_HOUSE) ?? houses[0]!;
+    this.game = new DinnerGame(RAPIER, { layout, houses, newSeed: randomSeed });
     this.state.code = code;
-    this.state.asset = HOUSE;
+    this.syncState();
 
-    const { layout, world } = await createWorld(HOUSE);
-    this.layout = layout;
-    this.world = world;
-    this.cc = createCharacterController(world);
-    this.world.step(); // builds the query pipeline before the first move
-
-    this.onMessage(MSG.move, (client, message: unknown) => {
-      if (isMoveMessage(message)) this.handleMove(client, message);
+    const game = this.game;
+    this.onMessage(MSG.cmd, (client, message: unknown) => {
+      if (isCommand(message)) game.command(client.sessionId, message);
     });
-    this.setFixedTimestep(() => this.world.step(), 30);
-    console.log(`[room ${this.state.code}] created`);
+    this.onMessage(MSG.voice, (client, message: unknown) => this.relayVoice(client, message));
+    this.setFixedTimestep((ctx) => this.sendEvents(game.tick(ctx.dt)), NET.tickHz);
+    console.log(`[room ${code}] created`);
+  }
+
+  override onBeforePatch() {
+    this.syncState();
+  }
+
+  /** Copies the game's view into the schema; Colyseus sends only what changed. */
+  syncState() {
+    // Patches can start before onCreate finishes loading the house.
+    if (this.game) syncInto(this.state, this.game.view() as unknown as Record<string, unknown>);
   }
 
   override onJoin(client: Client, options: Partial<JoinOptions>) {
-    const feet = this.freeSpawn();
-    const body = createPlayerBody(RAPIER, this.world, feet.position);
-    this.hosts.set(client.sessionId, { body, lastMoveAt: Date.now() });
+    this.game?.addPlayer(client.sessionId, (options.name ?? '').trim());
+    this.syncState();
+    console.log(`[room ${this.state.code}] ${options.name ?? '?'} joined (${this.clients.length}/${this.maxClients})`);
+  }
 
-    const used = new Set([...this.state.players.values()].map((p) => p.color));
-    const color = APRONS.find((c) => !used.has(c)) ?? APRONS[0]!;
-    const name = (options.name ?? '').trim().slice(0, 16) || `Host ${this.clients.length}`;
+  override async onDrop(client: Client) {
+    // Dropped (not left on purpose): hold their place for a minute.
+    this.game?.setConnected(client.sessionId, false);
+    await this.allowReconnection(client, NET.reconnectSeconds);
+  }
 
-    this.state.players.set(
-      client.sessionId,
-      new PlayerState().assign({
-        name,
-        color,
-        x: feet.position[0],
-        y: feet.position[1],
-        z: feet.position[2],
-        yaw: feet.yaw,
-      }),
-    );
-    console.log(`[room ${this.state.code}] ${name} joined (${this.clients.length}/${this.maxClients})`);
+  override onReconnect(client: Client) {
+    this.game?.setConnected(client.sessionId, true);
   }
 
   override onLeave(client: Client) {
-    const host = this.hosts.get(client.sessionId);
-    if (host) removePlayerBody(this.world, host.body);
-    this.hosts.delete(client.sessionId);
-    this.state.players.delete(client.sessionId);
+    this.game?.removePlayer(client.sessionId);
   }
 
   override onDispose() {
-    this.world.free();
+    this.game?.dispose();
     console.log(`[room ${this.state.code}] disposed`);
   }
 
-  /** Accepts the client's predicted position as an intent, then moves there through physics. */
-  private handleMove(client: Client, msg: MoveMessage) {
-    const host = this.hosts.get(client.sessionId);
-    const player = this.state.players.get(client.sessionId);
-    if (!host || !player) return;
-
-    const now = Date.now();
-    const dt = Math.min((now - host.lastMoveAt) / 1000, MAX_MOVE_DT);
-    host.lastMoveAt = now;
-    if (dt <= 0) return;
-
-    let dx = msg.x - host.body.position[0];
-    let dz = msg.z - host.body.position[2];
-    const allowed = PLAYER.sprintSpeed * NET.speedTolerance * dt + 0.05;
-    const dist = Math.hypot(dx, dz);
-    if (dist > allowed) {
-      dx *= allowed / dist;
-      dz *= allowed / dist;
+  private sendEvents(events: GameEvent[]) {
+    if (events.length === 0) return;
+    const shared: GameEvent[] = [];
+    const personal = new Map<string, GameEvent[]>();
+    for (const e of events) {
+      if (e.t === 'note' && e.to) {
+        const list = personal.get(e.to) ?? [];
+        list.push(e);
+        personal.set(e.to, list);
+      } else {
+        shared.push(e);
+      }
     }
-
-    movePlayer(this.cc, host.body, dx, dz, dt);
-    player.x = host.body.position[0];
-    player.y = host.body.position[1] - PLAYER_CENTER_OFFSET;
-    player.z = host.body.position[2];
-    player.yaw = msg.yaw;
+    if (shared.length > 0) this.broadcast(MSG.events, shared);
+    for (const [id, list] of personal) this.clients.getById(id)?.send(MSG.events, list);
   }
 
-  private freeSpawn() {
-    const spawns = this.layout.spawns;
-    if (spawns.length === 0) throw new Error(`${HOUSE} has no spawn points`);
-    const taken = [...this.state.players.values()];
-    const clear = spawns.find((s) =>
-      taken.every((p) => Math.hypot(p.x - s.position[0], p.z - s.position[2]) > PLAYER.radius * 3),
-    );
-    return clear ?? spawns[this.clients.length % spawns.length]!;
+  /** WebRTC signaling: forward `{ to, signal }` to that one client as `{ from, signal }`. */
+  private relayVoice(client: Client, message: unknown) {
+    if (typeof message !== 'object' || message === null) return;
+    const { to, signal } = message as Partial<VoiceRelay>;
+    if (typeof to !== 'string' || to === client.sessionId || signal === undefined) return;
+    if (JSON.stringify(signal).length > MAX_SIGNAL_BYTES) return;
+    this.clients.getById(to)?.send(MSG.voice, { from: client.sessionId, signal });
   }
 }

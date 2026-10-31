@@ -23,7 +23,14 @@ describe('parseLayout', () => {
   });
 
   it('rejects a bad version', () => {
-    expect(() => parseLayout({ ...minimalLayout, version: 2 })).toThrow(LayoutError);
+    expect(() => parseLayout({ ...minimalLayout, version: 3 })).toThrow(LayoutError);
+  });
+
+  it('reads version 2 sockets and gives version 1 none', () => {
+    expect(parseLayout(minimalLayout).sockets).toEqual([]);
+    const v2 = { ...minimalLayout, version: 2, sockets: [{ id: 'plate_0', position: [0, 0.77, 0.6], yaw: 0 }] };
+    expect(parseLayout(v2).sockets[0]?.id).toBe('plate_0');
+    expect(() => parseLayout({ ...minimalLayout, version: 2 })).toThrow(/layout\.sockets/);
   });
 
   it('rejects unknown collider shapes with a path', () => {

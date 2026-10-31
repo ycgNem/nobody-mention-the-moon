@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nobody Mention the Moon</title>
+    <link rel="icon" href="data:," />
+    <meta name="description" content="A co-op dinner party for 1–6 hosts. The guests are monsters in disguise. Keep it that way." />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
@@ -12,22 +14,21 @@
     <form id="join" class="panel" autocomplete="off">
       <h1>Nobody Mention the Moon</h1>
       <p class="tag">Dinner for monsters. Catering by humans. Keep it that way.</p>
-      <label>Your name <input id="join-name" maxlength="16" required /></label>
+      <label>Your name <input id="join-name" maxlength="16" /></label>
       <label>Room code <input id="join-code" maxlength="4" required /></label>
       <button type="submit">Join dinner</button>
       <button type="button" id="join-solo" class="secondary">Play solo (no server)</button>
+      <p id="join-loading" class="tag" hidden>Setting the table…</p>
       <p id="join-error" class="error" hidden></p>
     </form>
 
     <div id="hud" hidden>
-      <div id="room-badge"></div>
-      <ul id="roster"></ul>
       <div id="hint">
-        Click to look · WASD move · aim at a guest: <b>1 2 3</b> small talk, <b>E</b> serve, <b>G</b> move seat ·
-        <b>Enter</b> say something · <b>O</b> overhead view · <b>`</b> tuning
+        Click to look · <b>WASD</b> move · <b>E</b> use · <b>right-click</b> Small Talk · <b>Q</b> drop · hold <b>click</b> throw ·
+        <b>G</b> move a guest · <b>V</b> talk · <b>Enter</b> say · <b>Tab</b> ledger · <b>O</b> overhead · <b>Esc</b> settings
       </div>
       <div id="crosshair"></div>
-      <div id="net"></div>
+      <button id="settings-button" type="button" title="Settings">⚙</button>
     </div>
 
     <script type="module" src="/src/main.ts"></script>

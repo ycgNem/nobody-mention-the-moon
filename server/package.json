@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts --production"
   },
   "dependencies": {
     "@colyseus/core": "0.18.23",
     "@colyseus/schema": "5.0.43",
     "@colyseus/ws-transport": "0.18.4",
     "@dimforge/rapier3d-compat": "0.21.0",
-    "@moon/shared": "*"
+    "@moon/shared": "*",
+    "tsx": "4.23.15"
   },
   "devDependencies": {
     "@colyseus/sdk": "0.18.9"

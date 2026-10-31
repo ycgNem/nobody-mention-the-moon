@@ -62,6 +62,57 @@ M0 already gives us a walkable room with six `seat_*` points, so M1's fun test r
 - Solo for M1: the sim runs in the browser. Online players each get their own dinner until M3 moves it to the server.
 - M2 shrinks to the physical layer (kitchen, carrying, full house, line of sight).
 
+### D-013 · Hosting: one process, one origin, one Fly.io machine; TURN credentials from the server · 2026-10-31
+Answers Q7. The game server also serves the built client, `/healthz` and `/ice`, on one port, packaged as a Docker image and run on a single Fly.io machine (`fly.toml`). Details in [HOSTING.md](HOSTING.md).
+- **Same origin instead of a separate static host:** the client already connects to `wss://<its own host>` in production, there's no CORS and only one TLS certificate, and the client a player downloads always matches the server's version. The server reads house layouts from the same `client/dist/models` it serves, so the house the rules run on is the house on screen. Cloudflare Pages was out anyway: its 25 MiB file cap is below the 41 MB speech model.
+- **Fly.io over the alternatives:** WebSockets through its proxy with TLS on `*.fly.dev` and custom domains, deploys straight from the Dockerfile, health checks on `/healthz`, regions near the players, and machines that don't sleep when `auto_stop_machines = "off"`. Render's free tier sleeps when idle, which would drop dinners. A Hetzner VPS is cheaper, but then we own TLS, OS updates and restarts. The same image runs there behind Caddy if we move.
+- **Exactly one machine:** Colyseus rooms live in memory. Two machines would split one room code into two dinners. More machines would need Colyseus' Redis presence and driver, which friend-group playtests don't need. Deploy with `--ha=false` and the rolling strategy. A deploy ends the dinners in progress.
+- **TURN credentials come from the server, not the bundle:** `/ice` mints short-lived credentials from coturn's `use-auth-secret` secret (`TURN_SECRET`) or from Cloudflare's TURN API. `VITE_ICE_SERVERS` stays as a build-time fallback. TURN itself runs on a small VPS (coturn) or at Cloudflare, not on Fly: a relay needs a wide UDP port range.
+- **Static files are served by our own ~200 lines in `server/src/http.ts`:** Colyseus' router can't stream a file (its response writer ends the response after the first chunk), and `express.static` would have meant a direct dependency plus `@types/express`. Unversioned `/models/*` files are revalidated on every load (ETag, so usually a 304) because their names carry no hash and the client's layout must match the server's. A `?v=` query opts into a one-year cache.
+- **The server runs TypeScript through `tsx` in production too**, as in dev. `tsx` (same pinned 4.23.15) is now a dependency of `server/`, so the runtime image can install production dependencies only.
+
+### D-014 · Keyword spotting: Vosk WASM with a decoy grammar · 2026-10-31
+Answers Q4. On-device Vosk (`@lichess-org/vosk-browser@0.0.3` with `vosk-model-small-en-us-0.15`, endpointer shortened) runs in a Web Worker fed by an AudioWorklet. Its grammar is the trigger vocabulary, ~340 decoy words and `[unk]`. Words fire once Vosk has scored them (`SPEECH.mode = 'confirmed'`, `minConfidence` 0.7): about 0.5 s after the word, with rare false triggers. The faster `'fast'` mode (~0.2 s, more false hits) is one setting away if playtests want it.
+- This replaces the < 300 ms target in TECH.md. A guest who reacts half a second late reads as a double-take; a guest who reacts to a word nobody said reads as a bug.
+- Web Speech is only an opt-in fallback, because Chrome and Edge send the audio off the device (D-006). No custom KWS model for now.
+- The 41 MB model is git-ignored. Locally it's installed into `client/public/speech/`; the Docker build downloads and checks it (D-013).
+- Only words heard while you're talking to the table (push-to-talk held, or open mic) are sent, as `{c: 'heard', word}`.
+Measurements and the method are in [spikes/M5-keyword-spotting.md](spikes/M5-keyword-spotting.md).
+
+### D-015 · One game host in `shared/`, run by the server and by the browser · 2026-10-31
+`shared/src/game/DinnerGame.ts` owns everything authoritative about a session: the lobby, players, Rapier bodies for props, doors, the kitchen, and the dinner sim. It takes Commands and emits a `GameView` plus events.
+- **Online**, `server/src/DinnerRoom.ts` runs it and copies the view into a Colyseus schema (`server/src/schema.ts`) that mirrors `GameView` field for field, so a client's decoded state is exactly what solo renders. The schema has no optional or nullable fields: `''` or `-1` means "none".
+- **Solo** (`?solo=1`, "Play solo"), `LocalLink` runs the same class in the tab. The client only ever talks to a `GameLink`, so solo and online share every line of client code, and there's no separate solo rules path to drift.
+- Clients predict their own movement with the shared physics and are reconciled. Everyone else is drawn 100 ms behind from interpolated snapshots (`NET.interpolationDelayMs`).
+- Line of sight, earshot and darkness come from the host through `SimWorld`, so the rules stay pure and testable with `OPEN_WORLD`.
+
+### D-016 · Content is decks of data; the M7 audit is a rules-aware bot · 2026-10-31
+M6/M7 content lives in `shared/src/content/` as typed data: 8 guest types (each with a `mechanic`), 20 quirks whose effects are data fields, 7 occasions (weights, forced events, an objective, optional book, families, honoree, hunter), 10 events, 5 relationships. The sim is split by concern: `core.ts` (queries, meters), `guests.ts` (quirks, relationships, mechanics, objectives), `events.ts` (the event deck and visitors) and `dinner.ts` (the evening and actions).
+- A new guest or event needs data, plus code only for a genuinely new mechanic (a new trigger kind, a new visitor).
+- **Repeatability audit:** `npm run audit [-- seeds]` rolls 1,000 seeds and plays each with `shared/src/sim/bot.ts`, a bot that plays by the rules a careful table would (feeds, covers mirrors, answers safely, handles events). It fails if any occasion or guest type is never beaten, or any seed crashes or stalls. First run: 1,000 seeds in about 9 s, about 90% survived, and every occasion and type was won 87–94% of the time. A bot that wins is a floor, not a fun test: humans make the mistakes that matter.
+- **First Shift** (M8 onboarding) is the normal sim with a fixed setup (2 guests, werewolf and vampire, one moonrise, Relaxed timers) plus HUD tips. It's a lobby checkbox, played once and then cleared, never required (D-003).
+
+### D-017 · All audio is synthesized in Web Audio · 2026-10-31
+Guest murmurs, the record (with its tension layer), the Chase loop and every SFX are generated at runtime from oscillators, noise and filters (`client/src/audio/`). There are no sample files to license, download or keep in sync. Each guest's murmur pitch comes from a hash of their disguise name, so the same seed sounds the same. Positional sounds go through the same room-graph muffling as voice chat, so the kitchen sounds muffled from the table, and the other way round.
+
+### D-018 · A table with fewer than two guests ends the dinner · 2026-10-31
+Found by measuring idle play: with Cozy (3 guests), hosts who did nothing at all "got through dinner" about a third of the time. Two guests ate each other, the last one had nobody left to eat, and the clock ran out with two strikes. Now, once fewer than `SIM.minGuests` (2) guests are left (seated, or still to arrive), the party breaks up as a `strikes` loss ("They made their excuses and left"). Idle Cozy dinners now survive about 6% of the time, only when nobody at the table eats people. The audit bot is unaffected (it feeds the table).
+
+### D-019 · The house is a lobby setting, and "surprise me" lets the seed pick · 2026-10-31
+Three houses (`house_a` family house, `house_b` city flat, `house_c` country manor) share one contract, checked by `shared/src/game/houses.test.ts`. The room host picks one in the lobby, or leaves it on "Surprise me", and then `pickHouse(seed)` chooses, so a shared seed replays the same house too.
+- **Moving house happens only in the lobby** (or as a dinner starts): `DinnerGame` frees its Rapier world, builds the new house's, clears props and puts everyone at the new van. Mid-dinner moves would mean migrating every body and prop, for no gameplay reason.
+- **Clients follow `GameView.asset`:** when it changes, `main.ts` loads that house's model and builds a fresh `GameClient` on the same link. The old one holds still while the model loads. Voice reconnects when this happens, which takes a second or two. All three layouts (~170 KB) load at startup; the models load when needed.
+- **Guests walk in at one pace (`SIM.guestWalkSpeed`) everywhere.** The game host sets `walkInSeconds` from the house's average route, so the manor's long hall takes longer than the flat's.
+- The audit plays each seed in the house it would get, with that house's seats.
+
+### D-020 · Houses get a baked AO map, not a lightmap; every glb is meshopt-compressed · 2026-10-31
+An asset opts in with `BAKE = "ao"` (house_a does). After validation, `blender/lib/bake.py` gives every static mesh a second UV map, packs them all into one atlas, has Cycles (CPU, headless) bake ambient occlusion into it and saves `<asset>_ao.webp` next to the glb. The client applies it as `aoMap` on UV channel 1 (`client/src/render/models.ts`).
+- **AO only, no baked light:** the lights change at runtime (the switch, power cuts, the dining lamp, the porch light), so light baked into a texture would be wrong half the time. AO depends on no light, so it stays right in every state. Three.js applies `aoMap` to indirect light only. The client also darkens direct diffuse by 60% of the AO (`AO_DIRECT`), so corners and the floor under furniture stay dark under the lamp too.
+- **What gets a lightmap:** meshes that move, hide or glow (door leaves, curtains, the mirror cover, the record, the moon, the boards, flames) are left out, and hidden during the bake so they leave no shadow behind. Roofs only cast AO. Faces under 0.004 m² (knobs, bevels, jars) get no island. They sample a white corner texel instead, because thousands of tiny islands with their margins would starve the walls and floors of texels.
+- **The glb says which file and which meshes:** `aoMap` is a scene custom property (glTF scene extras) and `lightmap = 1` is a per-mesh one (node extras). No naming convention, and assets without a bake load as before.
+- house_a: 12 meshes, a 2048² atlas at 64 samples, about 13 s of bake on the CPU (the whole build takes about 18 s), and a 705 KB webp.
+- **meshopt after every export:** `npm run art` runs gltf-transform over each glb it just wrote (EXT_meshopt_compression, decoded by the client's `MeshoptDecoder`). It uses the stock `meshopt` recipe minus POSITION quantization. Quantized positions move each mesh into a unit box and put the inverse into its node transform, which would shift the pivots the client relies on (door leaves swing about their origin, kit parts are placed at 0). Normals use the octahedral filter. UVs (14 bits, for the lightmap), joints, weights and colors are quantized. house_a: 4290 KB → 1130 KB. The skinned humanoid: 670 KB → 246 KB, with bone poses within 0.4 mm of the original across its clips.
+
 ---
 
 ## Open questions
@@ -71,8 +122,8 @@ M0 already gives us a walkable room with six `seat_*` points, so M1's fun test r
 | Q1 | Does the topic beat feel better at fixed intervals or with per-guest speed? | M1 |
 | Q2 | Should guest types ever be revealed to players before a Slip (e.g. a "confirm guess" for bonus tips)? | M1 |
 | Q3 | Solo: same rules with slower beats, or a lighter guest count only? | M2 |
-| Q4 | KWS engine: Vosk-WASM vs Web Speech vs custom | M5 spike |
+| Q4 | KWS engine: Vosk-WASM vs Web Speech vs custom | Decided in D-014 (Vosk WASM) |
 | Q5 | Are guest voices just gibberish, or gibberish with occasional real barked lines ("Lovely soup!")? | M6 |
 | Q6 | Should the Chase let caught players do anything (e.g. distract guests from the table as a "seated" spectator)? | M6 |
-| Q7 | Hosting: Fly.io vs Hetzner vs Railway. TURN provider. | M8 |
+| Q7 | Hosting: Fly.io vs Hetzner vs Railway. TURN provider. | Decided in D-013 (TURN: coturn or Cloudflare, both supported) |
 | Q8 | Release target: itch.io browser only, or a Steam wrapper later? | M8 |

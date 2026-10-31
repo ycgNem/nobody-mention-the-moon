@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "asset": "greybox",
   "colliders": [
     {
@@ -483,7 +483,9 @@
         4.1,
         0.0,
         -1.5
-      ]
+      ],
+      "leaf": false,
+      "open": true
     }
   ],
   "interactables": [
@@ -596,6 +598,44 @@
         2.6
       ],
       "yaw": 1.5708
+    }
+  ],
+  "sockets": [
+    {
+      "id": "candle_light_0",
+      "position": [
+        -0.6,
+        1.07,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "candle_light_1",
+      "position": [
+        0.0,
+        1.07,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "candle_light_2",
+      "position": [
+        0.6,
+        1.07,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "lamp_light",
+      "position": [
+        0.0,
+        1.95,
+        0.0
+      ],
+      "yaw": 0.0
     }
   ]
 }
