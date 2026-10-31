@@ -1,0 +1,4 @@
+node_modules
+dist
+client/public/models
+package-lock.json

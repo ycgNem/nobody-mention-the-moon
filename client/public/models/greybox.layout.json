@@ -1,0 +1,574 @@
+{
+  "version": 1,
+  "asset": "greybox",
+  "colliders": [
+    {
+      "name": "col_box_chair_0",
+      "shape": "box",
+      "center": [
+        -0.6,
+        0.475,
+        0.85
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chair_1",
+      "shape": "box",
+      "center": [
+        0.6,
+        0.475,
+        0.85
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_chair_2",
+      "shape": "box",
+      "center": [
+        0.6,
+        0.475,
+        -0.85
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        -1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_chair_3",
+      "shape": "box",
+      "center": [
+        -0.6,
+        0.475,
+        -0.85
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        -1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "col_box_chair_4",
+      "shape": "box",
+      "center": [
+        -1.6,
+        0.475,
+        0.0
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        -0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_chair_5",
+      "shape": "box",
+      "center": [
+        1.6,
+        0.475,
+        0.0
+      ],
+      "halfExtents": [
+        0.225,
+        0.475,
+        0.225
+      ],
+      "rotation": [
+        0.0,
+        0.7071,
+        0.0,
+        0.7071
+      ]
+    },
+    {
+      "name": "col_box_floor",
+      "shape": "box",
+      "center": [
+        0.0,
+        -0.05,
+        0.0
+      ],
+      "halfExtents": [
+        4.2,
+        0.05,
+        3.2
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_front_door",
+      "shape": "box",
+      "center": [
+        4.1,
+        1.05,
+        -1.5
+      ],
+      "halfExtents": [
+        0.03,
+        1.05,
+        0.45
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_sideboard",
+      "shape": "box",
+      "center": [
+        -3.75,
+        0.45,
+        0.0
+      ],
+      "halfExtents": [
+        0.25,
+        0.45,
+        0.9
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_table",
+      "shape": "box",
+      "center": [
+        0.0,
+        0.375,
+        0.0
+      ],
+      "halfExtents": [
+        1.2,
+        0.375,
+        0.5
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_a",
+      "shape": "box",
+      "center": [
+        4.1,
+        1.4,
+        0.975
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        2.025
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_b",
+      "shape": "box",
+      "center": [
+        4.1,
+        1.4,
+        -2.475
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        0.525
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_e_lintel",
+      "shape": "box",
+      "center": [
+        4.1,
+        2.45,
+        -1.5
+      ],
+      "halfExtents": [
+        0.1,
+        0.35,
+        0.45
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_a",
+      "shape": "box",
+      "center": [
+        -2.5,
+        1.4,
+        -3.1
+      ],
+      "halfExtents": [
+        1.7,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_b",
+      "shape": "box",
+      "center": [
+        2.5,
+        1.4,
+        -3.1
+      ],
+      "halfExtents": [
+        1.7,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_head",
+      "shape": "box",
+      "center": [
+        0.0,
+        2.45,
+        -3.1
+      ],
+      "halfExtents": [
+        0.8,
+        0.35,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_n_sill",
+      "shape": "box",
+      "center": [
+        0.0,
+        0.45,
+        -3.1
+      ],
+      "halfExtents": [
+        0.8,
+        0.45,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_s",
+      "shape": "box",
+      "center": [
+        0.0,
+        1.4,
+        3.1
+      ],
+      "halfExtents": [
+        4.2,
+        1.4,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_wall_w",
+      "shape": "box",
+      "center": [
+        -4.1,
+        1.4,
+        0.0
+      ],
+      "halfExtents": [
+        0.1,
+        1.4,
+        3.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "name": "col_box_window",
+      "shape": "box",
+      "center": [
+        0.0,
+        1.5,
+        -3.1
+      ],
+      "halfExtents": [
+        0.8,
+        0.6,
+        0.1
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "seats": [
+    {
+      "id": "0",
+      "position": [
+        -0.6,
+        0.45,
+        0.85
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "1",
+      "position": [
+        0.6,
+        0.45,
+        0.85
+      ],
+      "yaw": 0.0
+    },
+    {
+      "id": "2",
+      "position": [
+        0.6,
+        0.45,
+        -0.85
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "3",
+      "position": [
+        -0.6,
+        0.45,
+        -0.85
+      ],
+      "yaw": -3.1416
+    },
+    {
+      "id": "4",
+      "position": [
+        -1.6,
+        0.45,
+        0.0
+      ],
+      "yaw": -1.5708
+    },
+    {
+      "id": "5",
+      "position": [
+        1.6,
+        0.45,
+        0.0
+      ],
+      "yaw": 1.5708
+    }
+  ],
+  "rooms": [
+    {
+      "id": "dining",
+      "center": [
+        0.0,
+        1.4,
+        0.0
+      ],
+      "halfExtents": [
+        4.0,
+        1.4,
+        3.0
+      ]
+    }
+  ],
+  "doors": [
+    {
+      "id": "hall",
+      "a": "dining",
+      "b": "hall",
+      "position": [
+        4.1,
+        0.0,
+        -1.5
+      ]
+    }
+  ],
+  "interactables": [
+    {
+      "id": "curtain",
+      "kind": "curtain",
+      "position": [
+        0.0,
+        1.5,
+        -2.85
+      ]
+    },
+    {
+      "id": "front_door",
+      "kind": "door",
+      "position": [
+        4.0,
+        1.0,
+        -1.5
+      ]
+    },
+    {
+      "id": "painting",
+      "kind": "prop_painting",
+      "position": [
+        1.5,
+        1.6,
+        2.8
+      ]
+    }
+  ],
+  "spawns": [
+    {
+      "id": "0",
+      "position": [
+        3.2,
+        0.0,
+        2.25
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "1",
+      "position": [
+        3.2,
+        0.0,
+        1.5
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "2",
+      "position": [
+        3.2,
+        0.0,
+        0.75
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "3",
+      "position": [
+        3.2,
+        0.0,
+        0.0
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "4",
+      "position": [
+        3.2,
+        0.0,
+        -0.75
+      ],
+      "yaw": 1.5708
+    },
+    {
+      "id": "5",
+      "position": [
+        2.5,
+        0.0,
+        2.6
+      ],
+      "yaw": 1.5708
+    }
+  ]
+}

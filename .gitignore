@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+.env
+.env.local
+
+# Blender
+*.blend1
+blender/**/__pycache__/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json

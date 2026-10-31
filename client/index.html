@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nobody Mention the Moon</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <form id="join" class="panel" autocomplete="off">
+      <h1>Nobody Mention the Moon</h1>
+      <p class="tag">Dinner for monsters. Catering by humans. Keep it that way.</p>
+      <label>Your name <input id="join-name" maxlength="16" required /></label>
+      <label>Room code <input id="join-code" maxlength="4" required /></label>
+      <button type="submit">Join dinner</button>
+      <p id="join-error" class="error" hidden></p>
+    </form>
+
+    <div id="hud" hidden>
+      <div id="room-badge"></div>
+      <ul id="roster"></ul>
+      <div id="hint">Click to look around · WASD move · Shift sprint · Esc release mouse</div>
+      <div id="crosshair"></div>
+      <div id="net"></div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

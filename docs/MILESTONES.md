@@ -1,0 +1,208 @@
+# Milestones
+
+Each milestone has a **goal**, a **checklist** and a **Done when** test. Don't start the next milestone until the current Done-when passes, except where a milestone is marked *parallel-safe*.
+
+Size guide: **S** ≈ a few sessions · **M** ≈ a week or two · **L** ≈ several weeks.
+
+```
+M0 Foundations ─▶ M1 Paper Table ─▶ M2 Solo 3D Dinner ─▶ M3 Multiplayer ─▶ M4 Proximity Voice ─▶ M6 Vertical Slice ─▶ M7 Variety ─▶ M8 Release
+                                    M5 Trigger Words spike (parallel-safe from M1 on) ─────────────────┘
+```
+
+---
+
+## M0: Foundations · S · ✅ done 2026-10-31
+
+**Goal:** an empty project that builds, runs and syncs two players, so later milestones never fight tooling.
+
+- [x] npm workspaces: `client/`, `server/`, `shared/`
+- [x] `tsconfig.base.json` with `strict: true`. Each package extends it.
+- [x] Vite client with Three.js (pinned) + `@types/three` (matching)
+- [x] Colyseus server with an empty `DinnerRoom`. Join by 4-letter room code.
+- [x] `shared/` builds and is imported by both sides. Seeded RNG with tests.
+- [x] Rapier loaded in client and server. Same movement code (`shared/src/physics.ts`) for client prediction and server validation.
+- [x] ESLint + Prettier + Vitest wired up. `npm run dev` starts client and server together.
+- [x] **Blender pipeline:** `blender/build.py` + `lib/` (palette, prims, sockets, layout, validate), `npm run art` running Blender 5.2 headless through `BLENDER_PATH`
+- [x] Palette texture + `palette.ts` export
+- [x] `build.py` validation: naming prefixes, tri budget, applied transforms
+- [x] `.layout.json` type + validator in `shared/`
+- [x] Greybox dining room **built by script** (`house/greybox.py`): table, 6 `seat_*`, one door, one window, `col_*` boxes, `room_*` volumes
+- [x] Client loads `greybox.glb` with GLTFLoader. Server builds Rapier colliders from `greybox.layout.json`.
+- [x] `git init`, `.gitignore`
+- [x] First commit
+- [x] Record pinned versions in DECISIONS.md (D-009)
+
+*Verified:* `server/src/DinnerRoom.test.ts` runs a real server with two SDK clients. They share room `MOON`, see each other, and the server stops a client that claims to walk through the table. Screenshots showed the script-built room and a second player rendered with a name tag.
+
+**Done when:** `npm run art && npm run dev`, open two tabs, both join room `MOON`, and each sees the other's capsule moving around the script-built greybox room, colliding with the table. Changing the table size in `greybox.py` and rebuilding shows up after a page reload.
+
+---
+
+## M1: Paper Table (the fun test) · M
+
+**Goal:** prove the table puzzle is fun **before** building the 3D game around it. All rules live in `shared/sim`, played on a 2D debug board in the browser. Single player, no netcode.
+
+- [ ] `DinnerState`, `step()`, beat clock, seeded setup from a dinner seed
+- [ ] Topic passing with `pull` scoring, plus a next-receiver preview arc
+- [ ] Guest meters: Composure, Hunger. Slip at 0 Composure. Eating a neighbor at 100 Hunger.
+- [ ] Team meters: Cover, Strikes. Win at dessert, lose at 3 strikes or Cover 0.
+- [ ] 3 guest types as data: **werewolf, vampire, ghost** (core triggers only)
+- [ ] Hidden types + disguises (name and color only)
+- [ ] Player actions on the board: Small Talk card → guest, serve dish → guest, swap two seats, toggle curtains or mirror cover, hold up prop
+- [ ] Direct questions → Deflect, Truth or Lie → Rumor Ledger Rules
+- [ ] Rule-break checks (simple "in view" flag in 2D) and contradiction detection
+- [ ] 2 events: Moonrise, Doorbell: Neighbor
+- [ ] Typed "say" box that runs the trigger-word matcher (stands in for voice)
+- [ ] Vitest coverage for topic passing, meters, ledger and contradictions
+- [ ] All numbers in `shared/tuning.ts`. Live tuning panel on the debug board.
+
+**Done when:** a 10-minute, 4-guest dinner on the debug board has **at least 3 "oh no" chain reactions** (one fix causes the next problem), and someone watching you play wants a turn. If it isn't fun here, fix the rules here and don't move on.
+
+---
+
+## M2: Solo 3D Dinner · L
+
+**Goal:** the M1 sim, playable in first person in a real house.
+
+- [ ] First-person controller (walk, sprint, crouch, jump) with Rapier character controller
+- [ ] Grab, carry, throw, hold-up-prop
+- [ ] Greybox house **script** (`house/house_a.py`): dining room, kitchen, hallway with front door, garage (dog), bathroom (mirror), cellar
+- [ ] Room graph (rooms + doors) read from `house_a.layout.json`, used for earshot, visibility and later muffling
+- [ ] Greybox prop scripts: chair, plate, bowl, pot, curtain, mirror, record player, dog (each with `socket_*`/`interact_*`)
+- [ ] Placeholder humanoid rig script with `sit_idle`, `eat`, `flinch`, `walk` clips, played through `AnimationMixer`
+- [ ] Placeholder guests seated at the table: head-look, topic bubble icons, fuse ring, preview arc
+- [ ] Small Talk wheel (RMB), aimed at a guest
+- [ ] Direct question prompt + Lie wheel
+- [ ] Diegetic Rumor Ledger (kitchen chalkboard) + HUD strip
+- [ ] Simple kitchen: fridge → chop → hob/oven → plate, with dish tags
+- [ ] Interactables: curtains, lights, front door + invite, mirror tea-towel, record player
+- [ ] Line of sight from guests' heads (Rapier raycasts) for Slips and Rule breaks
+- [ ] Cover / Strikes HUD, results screen (tips + grade, awards stubbed)
+- [ ] Session flow: Booking → Prep → Arrivals → 3 Courses → Dessert → Results
+
+**Done when:** you can play a full dinner solo in 3D, from Booking Card to Results, with all three MVP guests, and every M1 mechanic works through physical interaction.
+
+---
+
+## M3: Multiplayer · L
+
+**Goal:** 2–6 friends in the same dinner over the internet.
+
+- [ ] Move the sim to the server inside `DinnerRoom`. Clients send commands.
+- [ ] Colyseus schema for the network view of `DinnerState`
+- [ ] Snapshot interpolation for other players, guests and props
+- [ ] Held-prop ownership + server validation
+- [ ] Lobby: the van, room code, ready-up, host picks party size, cosmetics (apron color + hat)
+- [ ] Join and leave in the lobby. Reconnect mid-dinner (seat held for 60 s).
+- [ ] Direct questions target specific players. Each player's own Small Talk cooldowns.
+- [ ] Player-count scaling for hunger and beat speed
+- [ ] Text chat, run through the trigger-word matcher on the server
+- [ ] Net debug overlay (ping, snapshot age, prop owners)
+
+**Done when:** 4 people on different home networks finish 3 dinners in a row with no desync that breaks the game, and the round-trip from lobby to results to lobby works without reloading.
+
+---
+
+## M4: Proximity Voice · M
+
+**Goal:** talking in the game *is* the game.
+
+- [ ] WebRTC mesh with signaling through the Colyseus room
+- [ ] Web Audio graph per peer: low-pass (room muffling) → HRTF panner → gain
+- [ ] Muffling from the room graph and door states, the same graph the server uses for earshot
+- [ ] Push-to-talk (default) / open mic. Per-player mute and volume. Speaking indicator.
+- [ ] Mic permission flow with a clear no-mic fallback (text only)
+- [ ] Voice activity detection exposed to the sim (for Toasts and the "whispers only" rumor)
+
+**Done when:** 4 players in a dinner can hear each other with clear direction, talking in the kitchen with the door shut is clearly muffled at the table, and nobody has to explain the muffling to a new player.
+
+---
+
+## M5: Trigger Words · M · *parallel-safe from M1 on*
+
+**Goal:** saying "moon" near the werewolf works, reliably and privately.
+
+- [ ] **Spike:** compare Vosk-WASM (grammar-limited) vs Web Speech API vs custom KWS on latency, accuracy, CPU, download size and browser support. Write up in DECISIONS.md.
+- [ ] AudioWorklet capture → Web Worker engine → `{word, confidence, t}`
+- [ ] Vocabulary built from content data (all guest trigger words + host-exposure words + "come in")
+- [ ] Debounce and confidence threshold in `tuning.ts`. Per-player calibration screen in the lobby ("say: *moon*").
+- [ ] Server earshot check → trigger applied → visible tell, so the speaker knows *why* the guest reacted
+- [ ] Vampire invite by voice ("come in")
+- [ ] **Toast** event using VAD + the trigger-word check
+- [ ] Setting: trigger words on/off, show the trigger list on the HUD
+
+**Done when:** in a quiet room, "moon" said at normal volume near the werewolf triggers **≥ 9 of 10** times; ordinary dinner chatter causes **≤ 1 false trigger per dinner**; CPU stays within the frame budget on a mid laptop; no audio or transcript leaves the device.
+
+---
+
+## M6: Vertical Slice · L
+
+**Goal:** a dinner good enough to show strangers. This is the version that answers "is this a game".
+
+- [ ] Art pass on **one house** in `house_a.py` + prop scripts (dining, kitchen, hall, garage, bathroom, cellar): low-poly, candlelit
+- [ ] Lightmap bake step in the Blender build (Cycles → UV2 → `lightMap` in Three.js)
+- [ ] `prims.py` upgraded to the final chunky style (bevels, tapers, soft blobs). Palette finalized.
+- [ ] Character style locked (scripted): hosts (apron and hat variants), 3 guest body presets + disguise kits on sockets, Slip animation clips
+- [ ] meshopt compression step with `@gltf-transform/cli`
+- [ ] Topic bubble icon set (14 tags), composure aura VFX, hunger tells
+- [ ] Secondary quirks for werewolf, vampire, ghost
+- [ ] Occasions: Dinner Party, Birthday, Book Club
+- [ ] Events: Moonrise, Neighbor, Toast, Dog Got Out, Power Cut, Oven Fire
+- [ ] Relationships: Exes, Siblings, Rivals
+- [ ] **The Chase** fail state + van escape
+- [ ] Full Results: tips, star grade, generated one-line review, awards, incident reel (3 clips)
+- [ ] Audio: dinner murmur gibberish per guest, record player music with tension layer, SFX
+- [ ] Fridge whiteboard guest polaroids + player scribbles
+- [ ] Dinner seed display + "play this seed" in the lobby
+- [ ] Playtest build hosted somewhere friends can reach it
+
+**Done when:** **3 separate friend groups** who've never seen the game each play at least 3 dinners, and in at least 2 of the 3 groups someone says "one more" without being asked. Write down the funniest moment from each session. If there isn't one, the slice isn't done.
+
+---
+
+## M7: Variety · L
+
+**Goal:** enough content that dinner 30 still surprises.
+
+- [ ] Guests: + **Fae, Shapeshifter, Gorgon, Mummy, Zombie** (8 total)
+- [ ] Secondary quirk pools for all 8
+- [ ] Visitors: Monster Hunter, Pizza Driver
+- [ ] Occasions: + Wedding Rehearsal, Surprise Party, Ex Reunion, Hunter Night (7 total)
+- [ ] Events: + Thunderstorm, Late Guest, Wine Spill, Party Game (≥ 10 total)
+- [ ] Relationships: + Crush, Owes Money
+- [ ] **2 more house scripts** (`house_b.py` city apartment, `house_c.py` country manor) reusing the prop scripts, each with its own room graph in `.layout.json`
+- [ ] Disguise kit scripts for the 5 new guest types
+- [ ] Bigger disguise pools (names, outfits, accessories). Dish pool ≥ 15.
+- [ ] Party size Banquet (7 guests). Solo tuning pass.
+- [ ] **Repeatability audit:** generate 1,000 dinner seeds, check the spread of guests, occasions, houses and events, and make sure no single combo is always unwinnable (sim-only bot run)
+
+**Done when:** a group that has played 20+ dinners still runs into something new in most dinners, and the 1,000-seed audit shows no degenerate seeds.
+
+---
+
+## M8: Polish and Release · M
+
+**Goal:** a public link you can send to any group of friends.
+
+- [ ] Settings: audio, mic, sensitivity, FOV, mouse sensitivity, keybinds, Relaxed Dinner toggle, trigger list on HUD
+- [ ] Accessibility pass (GDD §12). Subtitles for all event barks.
+- [ ] Controller support (stretch)
+- [ ] Performance pass: 60 fps on a mid laptop iGPU with 6 players
+- [ ] TURN server. Tested on hotspot and restrictive networks.
+- [ ] Hosting: game server + static client. Basic uptime monitoring.
+- [ ] Onboarding: a 90-second "First Shift" tutorial dinner (optional, skippable, never required)
+- [ ] Trailer-worthy capture of the Chase
+- [ ] Store or itch.io page, press kit (screenshots, GIFs, one-paragraph pitch)
+
+**Done when:** a friend group with only the link can go from page load to their first dinner in under 2 minutes, with no help.
+
+---
+
+## Parking lot (not scheduled)
+
+- Traitor variant: one player is secretly working for the Monster Hunter
+- The Real Hollow Household rare event
+- Steam release (Electron or Tauri wrapper) with Steam friends invites
+- Spectator mode for streamers + chat-voted events
+- Custom dinner editor (choose guests and occasion), seed sharing site
+- Additional guest types: Banshee, Swamp Thing, Siren, Imp, Frankenstein's Cousin
